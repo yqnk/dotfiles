@@ -16,6 +16,7 @@ bindkey '^H' backward-kill-word
 # aliases
 alias land=''
 alias ls='ls --color=auto -F'
+alias bat='bat --color=always'
 alias diff='diff --color=auto'
 alias grep='grep --color=auto'
 alias ip='ip -c=auto'
@@ -27,6 +28,7 @@ alias asciiquarium='asciiquarium -t -s'
 alias rl='~/rustlings/target/release/rustlings'
 alias wf-recorder='~/.config/hypr/rec.sh'
 alias pp='g++'
+alias xephyr='Xephyr -br -ac -noreset -host-cursor -screen 1280x720 :1' # -bc black bg / -ac no auth / -noreset no reset / -screen size / :1 display
 
 # custom commands
 
