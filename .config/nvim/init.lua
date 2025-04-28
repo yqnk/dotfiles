@@ -61,6 +61,30 @@ if not vim.uv.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+local border = {
+  { '╭', 'FloatBorder' },
+  { '─', 'FloatBorder' },
+  { '╮', 'FloatBorder' },
+  { '│', 'FloatBorder' },
+  { '╯', 'FloatBorder' },
+  { '─', 'FloatBorder' },
+  { '╰', 'FloatBorder' },
+  { '│', 'FloatBorder' },
+}
+
+local function set_lsp_border_winopts()
+  vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border })
+  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border })
+end
+
+set_lsp_border_winopts()
+
+vim.diagnostic.config {
+  float = {
+    border = 'single',
+  },
+}
+
 require('lazy').setup({
   'tpope/vim-sleuth', -- Detect and sets tabstop and shiftwidth automatically
 
@@ -285,11 +309,11 @@ require('lazy').setup({
         clangd = {
           auto_start = true,
         },
+        jdtls = {},
         bashls = {},
         pyright = {},
         rust_analyzer = {},
         mesonlsp = {},
-        asm_lsp = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -306,7 +330,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'shfmt',
+        'black', -- Used to format Python code
         'asmfmt',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -340,7 +364,7 @@ require('lazy').setup({
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
-        local disable_filetypes = { c = false, cpp = true }
+        local disable_filetypes = { c = false, s = true, cpp = false }
         return {
           timeout_ms = 500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -348,9 +372,10 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        sh = { 'shfmt' },
         c = { 'clang_format' },
+        cpp = { 'clang_format' },
         asm = { 'asmfmt' },
+        py = { 'black' },
       },
     },
   },
@@ -465,7 +490,18 @@ require('lazy').setup({
       require('nvim-treesitter.configs').setup(opts)
     end,
   },
-  { 'github/copilot.vim' },
+  {
+    'saecki/crates.nvim',
+    tag = 'stable',
+    config = function()
+      require('crates').setup()
+    end,
+  },
+
+  {
+    'mfussenegger/nvim-jdtls',
+  },
+
   require 'configs.autopairs',
 
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.

@@ -5,6 +5,7 @@ map({ 'n', 'i', 'v' }, '<C-s>', '<cmd> w <cr>')
 map('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- nvimtree
 map('n', '<C-n>', ':NvimTreeToggle<CR>', { desc = 'Toggle NvimTree' })
+map('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle NvimTree' })
 -- leader quit
 map('n', '<leader>Q', '<cmd> qall <CR>', {
   desc = 'Quit all',
