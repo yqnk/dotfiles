@@ -13,6 +13,12 @@ local M = {
       require("formatter.filetypes.go").gofmt,
       require("formatter.filetypes.go").goimports,
     },
+    c = {
+      require("formatter.filetypes.c").clangformat,
+    },
+    cpp = {
+      require("formatter.filetypes.c").clangformat,
+    },
     ["*"] = {
       require("formatter.filetypes.any").remove_trailing_whitespace,
     },

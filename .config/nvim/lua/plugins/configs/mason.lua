@@ -8,6 +8,9 @@ local options = {
     "js-debug-adapter",
 
     "gopls",
+
+    "clangd",
+    "codelldb",
   },
 
   PATH = "skip",

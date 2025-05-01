@@ -27,6 +27,11 @@ M.dap = {
       "<cmd> DapTerminate <CR>",
       "Terminate debugger",
     },
+
+    ["<leader>x"] = {
+      "<cmd> bd <CR>",
+      "Delete current buffer",
+    },
   },
 }
 

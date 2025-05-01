@@ -12,16 +12,18 @@ local plugins = {
           {
             -- left window : variables + stack
             elements = {
-              { id = "scopes", size = 0.6 },
+              { id = "scopes", size = 0.4 },
               { id = "stacks", size = 0.4 },
+              { id = "watches", size = 0.2 },
             },
-            size = 40,
+            size = 30,
             position = "left",
           },
           {
             -- bottom terminal
             elements = {
-              { id = "repl", size = 1.0 },
+              { id = "repl", size = 0.6 },
+              { id = "console", size = 0.4 },
             },
             size = 10,
             position = "bottom",
@@ -47,6 +49,17 @@ local plugins = {
       require("dap-go").setup(opts)
       require("core.utils").load_mappings "dap_go"
     end,
+  },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "mfussenegger/nvim-dap",
+    },
+    opts = {
+      handlers = {},
+    },
   },
   {
     "mfussenegger/nvim-dap",
