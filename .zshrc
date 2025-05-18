@@ -3,8 +3,15 @@ export STARSHIP_CONFIG="/home/yan/.config/starship/starship.toml"
 export ICONS="/home/yan/.local/share/icons"
 export WALLPAPERS="/home/yan/.local/share/wallpapers"
 export LS_COLORS="ow=01;37:di=01;37:ex=01;32:*.png=01;33:*.svg=01;33:*.jpeg=01;33:*.jpg=01;33"
+export PGHOST="/tmp/"
+export PGDATA="$HOME/postgresql/data"
+export PSQL_EDITOR="nvim"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/usr/lib/rustup/bin:/home/yan/.local/bin:/home/yan/.go/bin"
+export PGPORT="5432"
+export GOPATH="/home/yan/.go"
 
 export CMAKE_GENERATOR=Ninja
+export CMAKE_EXPORT_COMPILE_COMMANDS=1
 
 #binds -- see command zle -al -- cat to find keycode
 bindkey "^[[3~" delete-char
@@ -110,9 +117,41 @@ fakeTeamwork() {
     MESSAGE="$@"
 
     for i in $(seq 1 $COMMITS); do
-        git commit --allow-empty -m "$MESSAGE ($i)" 
+        git commit --allow-empty -m "$MESSAGE ($i)"
     done
 }
+
+# $1 is the threshould
+group() {
+  local threshold=$1
+  local prev=""
+  local count=0
+
+  while IFS= read -r line; do
+    if [[ "$line" == "$prev" ]]; then
+      ((count++))
+    else
+      if [[ $count -ge $threshold ]]; then
+        echo "$prev (x$count)"
+      else
+        for ((i=0; i<count; i++)); do
+          echo "$prev"
+        done
+      fi
+      prev="$line"
+      count=1
+    fi
+  done
+
+  if [[ $count -ge $threshold ]]; then
+    echo "$prev (x$count)"
+  else
+    for ((i=0; i<count; i++)); do
+      echo "$prev"
+    done
+  fi
+}
+
 alias git-fakeTeamwork='fakeTeamwork'
 
 # pfetch variables
@@ -129,7 +168,7 @@ unsetopt beep # disable beep on completion when pressing TAB
 eval "$(starship init zsh)"
 
 # zsh history
-SAVEHIST=2000 # save 2000 most-recent lines
+SAVEHIST=5000 # save 2000 most-recent lines
 HISTFILE="/home/yan/.zsh_history"
 
 # zsh plugins
