@@ -14,6 +14,14 @@ M.opts = {
     js = { "prettier" },
     ts = { "prettier" },
     go = { "goimports", "gofmt" },
+    mojo = { "mojo" },
+  },
+  formatters = {
+    mojo = {
+      command = "mojo",
+      args = { "format", "-" },
+      stdin = true,
+    },
   },
 }
 

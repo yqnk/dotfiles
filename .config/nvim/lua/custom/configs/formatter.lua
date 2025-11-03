@@ -6,6 +6,9 @@ local M = {
     typescript = {
       require("formatter.filetypes.typescript").prettier,
     },
+    typescriptreact = {
+      require("formatter.filetypes.typescriptreact").prettier,
+    },
     lua = {
       require("formatter.filetypes.lua").stylua,
     },
@@ -16,8 +19,14 @@ local M = {
     c = {
       require("formatter.filetypes.c").clangformat,
     },
+    py = {
+      require("formatter.filetypes.python").black,
+    },
     cpp = {
       require("formatter.filetypes.c").clangformat,
+    },
+    rust = {
+      require("formatter.filetypes.rust").rustfmt,
     },
     ["*"] = {
       require("formatter.filetypes.any").remove_trailing_whitespace,
