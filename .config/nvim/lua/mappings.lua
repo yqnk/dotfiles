@@ -30,9 +30,9 @@ map("n", "<leader>sb", "<cmd>Telescope buffers<CR>", { desc = "telescope find bu
 map("n", "<leader>sh", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
 map("n", "<leader>sm", "<cmd>Telescope marks<CR>", { desc = "telescope find marks" })
 map("n", "<leader>so", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find oldfiles" })
-map("n", "<leader>sfz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
-map("n", "<leader>gcm", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
-map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
+map("n", "<leader>sc", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
+map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
+map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
 map("n", "<leader>st", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
 
 nomap("n", "<leader>fw")
