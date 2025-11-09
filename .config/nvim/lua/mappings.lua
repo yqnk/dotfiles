@@ -9,8 +9,8 @@ local nomap = vim.keymap.del
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
-map("n", "<A-j>", "<cmd> m +1 <CR>")
-map("n", "<A-k>", "<cmd> m -2 <CR>")
+map({"n", "v"}, "<A-j>", "<cmd> m +1 <CR>")
+map({"n", "v"}, "<A-k>", "<cmd> m -2 <CR>")
 
 map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
