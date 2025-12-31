@@ -26,6 +26,12 @@ return {
         "html",
         "css",
         "rust",
+        "typescript",
+        "go",
+        "c",
+        "cpp",
+        "make",
+        "cmake",
       },
     },
   },
@@ -42,4 +48,6 @@ return {
       require("crates").setup()
     end,
   },
+
+  { "Civitasv/cmake-tools.nvim", opts = {}, ft = { "c", "cpp", "c++", "cc" } },
 }
