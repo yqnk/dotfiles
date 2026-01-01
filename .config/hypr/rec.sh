@@ -1,4 +1,4 @@
-#! /usr/bin/env zsh
+#!/bin/zsh
 
 current_date=$(date +'%Y-%m-%d_%H:%M:%S')
 records_dir="$HOME/documents/records"

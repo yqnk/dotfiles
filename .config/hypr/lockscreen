@@ -1,4 +1,4 @@
-#! /usr/bin/env zsh
+#!/bin/zsh
 
 export lockdate=$(date)
 brightness=$(brightnessctl get)
