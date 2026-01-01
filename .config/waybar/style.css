@@ -1,213 +1,118 @@
-@define-color fgcolor #c4c5c8;
-@define-color bgcolor #040404;
-
-@define-color color0 #3b6c80;
-
-@define-color color1 #86aad7;
-/* light blue */
-@define-color color2 #ff9e64;
-/* orange */
-@define-color color3 #ee9ff9;
-/* purple */
-@define-color color4 #ff7a7a;
-/* light red */
-
-
 * {
-    font-family: 'Jetbrains Mono Nerd Font';
-    font-size: 10px;
-    font-weight: bold;
-    min-height: 16px;
-}
-
-window {
-    border-radius: 15px 15px 15px 15px;
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrains Mono Nerd Font";
+  font-weight: 400;
+  font-size: 11px;
+  min-height: 0;
 }
 
 window#waybar {
-    background-color: alpha(@bgcolor, 0.7);
-    transition-duration: .5s;
-    border-radius: 5px;
-    border-left: 1px solid alpha(#c4c5c8, 1.0);
-    border-right: 1px solid alpha(#c4c5c8, 1.0);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  /* border-bottom: 1px solid white; */
+  /* border-radius: 0px 0px 8px 8px; */
 }
 
-#waybar.empty #window {
-    background: none;
-}
-
-.modules-left {
-    margin-left: 2px;
-    padding-right: 8px;
-}
-
-.modules-right {
-    margin-right: 2px;
-    padding-left: 10px;
-}
-
-.modules-center {
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
-.modules-left,
-.modules-center,
-.modules-right {
-    background-color: alpha(@bgcolor, 0.0);
-    border-radius: 7px;
-    margin: 2px;
-}
-
-#language {
-    color: white;
-    padding-left: 8px;
-}
-
-#workspaces {
-    background: transparent;
-    margin-right: -3px;
-    margin-left: -3px;
-    opacity: 0.88;
+tooltip {
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid white;
+  border-radius: 8px;
+  padding: 10px;
+  color: white;
 }
 
 #workspaces button {
-    color: grey;
-    font-weight: normal;
-    margin: 0px;
-    padding: 0px;
-    border-radius: 9px;
-    box-shadow: none;
-    text-shadow: none;
-}
-
-/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
-#workspaces button:hover {
-    border: none;
-    background: transparent;
-    color: white;
-    font-weight: bold;
-    border-radius: 15px;
+  padding: 2px 0px;
+  color: white;
+  margin: 2px 2px;
+  border: 1px solid transparent;
+  /* border-radius: 4px; */
 }
 
 #workspaces button.active {
-    background: transparent;
-    color: @fgcolor;
-    font-weight: bold;
+  border-bottom: 1px solid rgba(235, 64, 52, 0.8);
+  /* border-radius: 4px; */
 }
 
-#clock {
-    background-color: transparent;
-    color: @fgcolor;
-    border-radius: 0px 0px 0px 0px;
+#workspaces button.focused {
+  border-color: red;
 }
 
-#network {
-    background-color: transparent;
-    color: @fgcolor;
-    padding-right: 14px;
+#workspaces button.urgent {
+  color: white;
+  border-radius: 4px;
 }
 
-#battery {
-    background-color: transparent;
-    color: @fgcolor;
+#workspaces button:hover {
+  color: white;
+  font-weight: 400;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.1); /* Slight hover highlight */
+  /* border-radius: 4px; */
 }
 
-#battery.charging,
-#battery.plugged {
-    color: white;
-    background-color: transparent;
+#custom-power_profile,
+#idle_inhibitor,
+#window,
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#bluetooth,
+#temperature,
+#workspaces,
+#tray,
+#memory,
+#custom-powermenu,
+#backlight {
+  opacity: 1;
+  padding: 0px 5px;
 }
 
-#battery.warning {
-    color: @color2;
-}
-
-#battery.critical {
-    color: @color4;
-}
-
-#custom-updater {
-    color: @fgcolor;
-}
-
-#custom-sep {
-    color: #606060;
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-#custom-whitesep {
-    color: @fgcolor;
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-#custom-bracketl,
-#custom-bracketr {
-    color: @fgcolor;
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-@keyframes blink {
-    to {
-        background-color: transparent;
-        color: white;
-    }
-}
-
-#battery.critical:not(.charging) {
-    background-color: transparent;
-    color: red;
-}
-
-label:focus {
-    background-color: transparent;
-}
-
-#cpu {
-    color: @fgcolor;
+#memory {
+  color: white;
+  margin-right: -4px;
 }
 
 #temperature {
-    color: @fgcolor;
-}
-
-#memory {
-    color: @fgcolor;
-}
-
-#disk {
-    color: @fgcolor;
-}
-
-#disk,
-#cpu,
-#memory {
-    padding-right: 7px;
+  color: @text;
 }
 
 #temperature.critical {
-    color: @color4;
+  color: @love;
+}
+
+#window {
+  color: @text;
+}
+
+window#waybar.empty #window {
+  background-color: transparent;
+}
+
+#clock {
+  color: @rose;
+}
+
+#network {
+  color: @text;
+}
+
+#idle_inhibitor {
 }
 
 #pulseaudio {
-    background-color: transparent;
-    color: @fgcolor;
-    margin-right: 7px;
+  color: @sound;
 }
 
-#custom-menu {
-    color: @fgcolor;
-    padding-left: 8px;
+#battery {
+  color: white;
+  margin-right: 3px;
 }
 
-#custom-user {
-    color: @fgcolor;
-    padding-left: 8px;
-}
-
-#custom-firefox {
-    color: @fgcolor;
+#custom-whitesep {
+  color: @text;
+  margin-left: 4px;
+  margin-right: -3px;
 }
