@@ -15,6 +15,15 @@ function M:setup()
 
   -- See `:help vim.lsp.start` for an overview of the supported `config` options.
   local config = {
+    on_attach = function(client, bufnr)
+      local function nvchad_on_attach(client, bufnr)
+        require("nvchad.configs.lspconfig").on_attach(client, bufnr)
+      end
+
+      pcall(nvchad_on_attach, client, bufnr)
+
+      client.server_capabilities.semanticTokensProvider = nil
+    end,
     cmd = {
       "java", -- should be java 21
       "-Declipse.application=org.eclipse.jdt.ls.core.id1",
