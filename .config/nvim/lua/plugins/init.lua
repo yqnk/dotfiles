@@ -13,6 +13,14 @@ return {
     end,
   },
 
+  {
+    "williamboman/mason-lspconfig.nvim",
+    opts = {
+      exclude = {
+        "jdtls",
+      },
+    },
+  },
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
@@ -47,6 +55,11 @@ return {
     config = function()
       require("crates").setup()
     end,
+  },
+
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = "java",
   },
 
   { "Civitasv/cmake-tools.nvim", opts = {}, ft = { "c", "cpp", "c++", "cc" } },

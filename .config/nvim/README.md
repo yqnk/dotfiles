@@ -1,4 +1,4 @@
-# My Neovim configuration
+# My archlinux dotfiles
 
 ## TODOs
 

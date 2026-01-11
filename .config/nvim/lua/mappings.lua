@@ -26,14 +26,18 @@ map("n", "<C-n>", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
 
 -- telescope
 map("n", "<leader>sg", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
+map("n", "<leader>sr", "<cmd>Telescope lsp_references<CR>", { desc = "telescope find references" })
 map("n", "<leader>sb", "<cmd>Telescope buffers<CR>", { desc = "telescope find buffers" })
 map("n", "<leader>sh", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
 map("n", "<leader>sm", "<cmd>Telescope marks<CR>", { desc = "telescope find marks" })
 map("n", "<leader>so", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find oldfiles" })
 map("n", "<leader>sc", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
+map("n", "<leader>ld", "<cmd>Telescope lsp_definitions<CR>", { desc = "telescope list definitions" })
+map("n", "<leader>li", "<cmd>Telescope lsp_implementations<CR>", { desc = "telescope list implementations" })
+map("n", "<leader>lt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "telescope list definitions" })
+
 map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
 map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
-map("n", "<leader>st", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
 
 -- cmake-tools
 map("n", "<leader>cmg", "<cmd>CMakeGenerate<cr>", { desc = "CMake Generate" })
@@ -50,6 +54,15 @@ map("n", "<leader>cmoe", "<cmd>CMakeOpenExecutor<cr>", { desc = "CMake Open Outp
 map("n", "<leader>cmor", "<cmd>CMakeOpenRunner<cr>", { desc = "CMake Open Runner" })
 map("n", "<leader>cmwe", "<cmd>CMakeCloseExecutor<cr>", { desc = "CMake Close Output" })
 map("n", "<leader>cmwr", "<cmd>CMakeCloseRunner<cr>", { desc = "CMake Close Runner" })
+
+-- Go to XXX
+map("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Aller à la déclaration" })
+map("n", "gd", vim.lsp.buf.definition, { desc = "LSP Aller à la définition" })
+map("n", "K", vim.lsp.buf.hover, { desc = "LSP Afficher info (Hover)" })
+map("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Aller à l'implémentation" })
+map("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "LSP Aide signature" })
+map("n", "<leader>ra", vim.lsp.buf.rename, { desc = "LSP Renommer variable" })
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Actions de code" })
 
 nomap("n", "<leader>fw")
 nomap("n", "<leader>fb")
