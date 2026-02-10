@@ -31,6 +31,7 @@ map("n", "<leader>sb", "<cmd>Telescope buffers<CR>", { desc = "telescope find bu
 map("n", "<leader>sh", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
 map("n", "<leader>sm", "<cmd>Telescope marks<CR>", { desc = "telescope find marks" })
 map("n", "<leader>so", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find oldfiles" })
+map("n", "<leader>sf", "<cmd>Telescope find_files<CR>", { desc = "telescope find files" })
 map("n", "<leader>sc", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
 map("n", "<leader>ld", "<cmd>Telescope lsp_definitions<CR>", { desc = "telescope list definitions" })
 map("n", "<leader>li", "<cmd>Telescope lsp_implementations<CR>", { desc = "telescope list implementations" })
