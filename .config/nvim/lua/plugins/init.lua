@@ -18,6 +18,7 @@ return {
     opts = {
       exclude = {
         "jdtls",
+        "rust_analyzer",
       },
     },
   },
@@ -43,11 +44,22 @@ return {
       },
     },
   },
+  {
+    "rust-lang/rust.vim",
+    ft = "rust",
+    init = function()
+      vim.g.rustfmt_autosave = 1
+    end,
+  },
 
   {
     "mrcjkb/rustaceanvim",
     version = "^8",
+    ft = "rust",
     lazy = false,
+    init = function()
+      require "configs.rustaceanvim"
+    end,
   },
 
   {
