@@ -45,14 +45,6 @@ return {
     },
   },
   {
-    "rust-lang/rust.vim",
-    ft = "rust",
-    init = function()
-      vim.g.rustfmt_autosave = 1
-    end,
-  },
-
-  {
     "mrcjkb/rustaceanvim",
     version = "^8",
     ft = "rust",
@@ -61,7 +53,6 @@ return {
       require "configs.rustaceanvim"
     end,
   },
-
   {
     "saecki/crates.nvim",
     event = { "BufRead Cargo.toml" },
@@ -78,29 +69,26 @@ return {
   { "Civitasv/cmake-tools.nvim", opts = {}, ft = { "c", "cpp", "c++", "cc" } },
 
   {
-    "mfussenegger/nvim-dap",
+    "rcarriga/nvim-dap-ui",
     config = function()
-      local dap, dapui = require "dap", require "dapui"
-      dap.listeners.before.attach.dapui_config = function()
-        dapui.open()
-      end
-      dap.listeners.before.launch.dapui_config = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated.dapui_config = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited.dapui_config = function()
-        dapui.close()
-      end
+      require("dapui").setup()
     end,
+    dependencies = {
+      {
+        "mfussenegger/nvim-dap",
+        config = function()
+          require "configs.nvim-dap"
+        end,
+      },
+      "nvim-lua/plenary.nvim",
+      "nvim-neotest/nvim-nio",
+    },
   },
 
   {
-    "rcarriga/nvim-dap-ui",
-    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    "RaafatTurki/hex.nvim",
     config = function()
-      require("dapui").setup()
+      require("hex").setup()
     end,
   },
 }

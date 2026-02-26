@@ -65,6 +65,26 @@ map("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "LSP Aide signature" })
 map("n", "<leader>ra", vim.lsp.buf.rename, { desc = "LSP Renommer variable" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Actions de code" })
 
+-- dap
+map("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle Breakpoint" })
+map("n", "<leader>dc", "<cmd>lua require'dap'.continue()<CR>", { desc = "Continue" })
+map("n", "<leader>di", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Step Into" })
+map("n", "<leader>do", "<cmd>lua require'dap'.step_over()<CR>", { desc = "Step Over" })
+map("n", "<leader>dO", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Step Out" })
+map("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<CR>", { desc = "Toggle Repl" })
+map("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Run Last" })
+map("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<CR>", { desc = "Toggle UI" })
+map("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<CR>", { desc = "Terminate" })
+
+-- dapui
+map("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<CR>", { desc = "Toggle UI" })
+map("n", "<leader>de", "<cmd>lua require'dapui'.eval()<CR>", { desc = "Evaluate" })
+
+-- hexdump
+map("n", "<leader>ad", "<cmd>lua require'hex'.dump()<CR>", { desc = "Dump Hex" })
+map("n", "<leader>aa", "<cmd>lua require'hex'.assemble()<CR>", { desc = "Dump Hex" })
+map("n", "<leader>at", "<cmd>lua require'hex'.toggle()<CR>", { desc = "Dump Hex" })
+
 nomap("n", "<leader>fw")
 nomap("n", "<leader>fb")
 nomap("n", "<leader>fh")
