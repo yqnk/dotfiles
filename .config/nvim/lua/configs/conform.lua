@@ -6,6 +6,7 @@ local options = {
     rust = { "rustfmt", lsp_format = "fallback" },
     go = { "gofmt" },
     python = { "black" },
+    asm = { "asmfmt" },
   },
 
   format_on_save = {

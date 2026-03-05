@@ -21,8 +21,10 @@ map({ "n", "x" }, "<leader>f", function()
 end, { desc = "general format file " })
 
 -- nvimtree
-map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
-map("n", "<C-n>", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
+-- map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
+-- map("n", "<C-n>", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
+map("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "Neotree toggle" })
+map("n", "<C-n>", "<cmd>Neotree focus<CR>", { desc = "Neotree focus" })
 
 -- telescope
 map("n", "<leader>sg", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
