@@ -25,7 +25,8 @@
 
     "custom/menu": {
         "format": " ",
-        "tooltip": false
+        "tooltip": false,
+        "on-click": "kitty"
     },
 
     "hyprland/workspaces": {
@@ -69,11 +70,17 @@
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["", " ", "󰕾 ", " "]
+            "default": [" ", " ", "󰕾 ", " "]
         },
         "on-click": "pamixer -t",
         "on-click-right": "pavucontrol",
         "tooltip": false
+    },
+
+    "pulseaudio/slider": {
+        "min": 0,
+        "max": 0,
+        "orientation": "horizontal"
     },
 
     "bluetooth": {
@@ -84,7 +91,7 @@
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
 
-        "on-click": "blueman-manager"
+        "on-click-right": "blueman-manager"
     },
     
     "network": {

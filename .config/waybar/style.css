@@ -15,7 +15,8 @@ window#waybar {
   color: #666666;
   margin-right: 6px;
   margin-left: 6px;
-  transition: transform 0.5s ease;
+  transition: tranform 0.5s ease;
+  transition: color 0.25s ease;
 }
 
 #custom-sys-expand:hover,
@@ -30,21 +31,19 @@ window#waybar {
 
 #network {
   color: white;
-  margin-right: 6px;
-  padding: 0px;
+  margin-right: 4px;
 }
 
 #bluetooth {
   color: white;
   padding: 0px;
-  margin-right: 1px;
-  margin-left: 1px;
+  margin-right: 0px;
 }
 
 #pulseaudio {
   color: white;
   padding: 0px;
-  margin-right: 6px;
+  margin-right: 4px;
 }
 
 #battery {
