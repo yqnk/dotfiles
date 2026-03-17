@@ -12,7 +12,7 @@ map("i", "jk", "<ESC>")
 map({ "n", "v" }, "<A-j>", "<cmd> m +1 <CR>")
 map({ "n", "v" }, "<A-k>", "<cmd> m -2 <CR>")
 
-map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+-- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
 -- conform (format)
 nomap({ "n", "x" }, "<leader>fm")
