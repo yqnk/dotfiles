@@ -3,10 +3,9 @@ local options = {
     lua = { "stylua" },
     css = { "prettier" },
     html = { "prettier" },
-    rust = { "rustfmt", lsp_format = "fallback" },
+    rust = { "rustfmt", lsp_fallback = true },
     go = { "gofmt" },
     python = { "black" },
-    asm = { "asmfmt" },
   },
 
   format_on_save = {

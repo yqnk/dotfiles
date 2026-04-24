@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    event = "BufWritePre", -- uncomment for format on save
+    -- event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
   },
 
@@ -13,17 +13,25 @@ return {
     end,
   },
 
+  -- test new blink
+  { import = "nvchad.blink.lazyspec" },
+
+  -- {
+  -- 	"nvim-treesitter/nvim-treesitter",
+  -- 	opts = {
+  -- 		ensure_installed = {
+  -- 			"vim", "lua", "vimdoc",
+  --      "html", "css"
+  -- 		},
+  -- 	},
+  -- },
+
   {
-    "williamboman/mason-lspconfig.nvim",
+    "lewis6991/gitsigns.nvim",
     opts = {
-      exclude = {
-        "jdtls",
-        "rust_analyzer",
-      },
+      current_line_blame = true,
     },
   },
-  -- test new blink
-  -- { import = "nvchad.blink.lazyspec" },
 
   -- TEST: disable nvimtree in favor of neotree
   { "nvim-tree/nvim-tree.lua", enabled = false },
@@ -43,25 +51,6 @@ return {
   },
 
   {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vim",
-        "lua",
-        "vimdoc",
-        "html",
-        "css",
-        "rust",
-        "typescript",
-        "go",
-        "c",
-        "cpp",
-        "make",
-        "cmake",
-      },
-    },
-  },
-  {
     "mrcjkb/rustaceanvim",
     version = "^8",
     ft = "rust",
@@ -76,30 +65,6 @@ return {
     config = function()
       require("crates").setup()
     end,
-  },
-
-  {
-    "mfussenegger/nvim-jdtls",
-    ft = "java",
-  },
-
-  { "Civitasv/cmake-tools.nvim", opts = {}, ft = { "c", "cpp", "c++", "cc" } },
-
-  {
-    "rcarriga/nvim-dap-ui",
-    config = function()
-      require("dapui").setup()
-    end,
-    dependencies = {
-      {
-        "mfussenegger/nvim-dap",
-        config = function()
-          require "configs.nvim-dap"
-        end,
-      },
-      "nvim-lua/plenary.nvim",
-      "nvim-neotest/nvim-nio",
-    },
   },
 
   {

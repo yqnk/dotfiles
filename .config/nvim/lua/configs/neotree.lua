@@ -9,6 +9,10 @@ local M = {
   filesystem = {
     scan_mode = "deep",
     group_empty_dirs = true,
+
+    filtered_items = {
+      hide_dotfiles = false,
+    },
   },
 }
 
