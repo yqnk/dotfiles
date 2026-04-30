@@ -13,6 +13,17 @@ return {
     end,
   },
 
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    opts = { 
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      preset = "helix"
+    },
+  },
+
   -- test new blink
   { import = "nvchad.blink.lazyspec" },
 
@@ -30,6 +41,23 @@ return {
     "lewis6991/gitsigns.nvim",
     opts = {
       current_line_blame = true,
+    },
+  },
+
+  {
+    "rcarriga/nvim-dap-ui",
+    config = function()
+      require("dapui").setup()
+    end,
+    dependencies = {
+      {
+        "mfussenegger/nvim-dap",
+        config = function()
+          require "configs.nvim-dap"
+        end,
+      },
+      "nvim-lua/plenary.nvim",
+      "nvim-neotest/nvim-nio",
     },
   },
 
@@ -72,5 +100,13 @@ return {
     config = function()
       require("hex").setup()
     end,
+  },
+
+  {
+    "nvim-java/nvim-java",
+    config = function()
+      require("java").setup()
+    end,
+    ft = { "java" },
   },
 }
