@@ -10,6 +10,17 @@ Row {
     anchors.rightMargin: 4
     spacing: 4
 
+    // Color picker
+    BarRect {
+        onClicked: {
+            picker.pickColor();
+        }
+
+        ColorPicker {
+            id: picker
+        }
+    }
+
     // Network + Volume + Bluetooth + Mic (?)
     BarRect {
         Network {}
