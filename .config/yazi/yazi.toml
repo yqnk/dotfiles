@@ -1,6 +1,9 @@
+[mgr]
+ratio = [1, 3, 6]
+
 [opener]
 pdff = [
-{ run = 'firefox "$@"', desc = "firefox", block = true, for = "unix"},
+    { run = 'zen-browser "$@"', desc = "zen-browser", block = true, for = "unix"},
 ]
 
 [open]
