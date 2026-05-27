@@ -8,10 +8,14 @@ Row {
     anchors.verticalCenter: parent.verticalCenter
     spacing: 4
 
+    // TODO: le calendar LINK AVEC MON GOOGLE CALENDAR ??
+
     BarRect {
         onClicked: {
             console.log("left");
         }
         Clock {}
     }
+
+    // TODO: mpris ?
 }

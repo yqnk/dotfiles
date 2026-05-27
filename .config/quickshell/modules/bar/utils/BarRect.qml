@@ -27,9 +27,15 @@ Rectangle {
 
     Behavior on color {
         ColorAnimation {
-            duration: 100
+            duration: 300
         }
     }
+
+    // Behavior on implicitWidth {
+    //     NumberAnimation {
+    //         duration: 100
+    //     }
+    // }
 
     MouseArea {
         id: mouseArea
@@ -42,7 +48,7 @@ Rectangle {
         id: contentContainer
         anchors.centerIn: parent
         spacing: barRectRoot.innerSpacing
-        // width: childrenRect.width
-        // height: childrenRect.height
+        width: childrenRect.width
+        height: childrenRect.height
     }
 }

@@ -19,4 +19,8 @@ Row {
     }
 
     Workspaces {}
+
+    BarRect {
+        FocusedWindow {}
+    }
 }
