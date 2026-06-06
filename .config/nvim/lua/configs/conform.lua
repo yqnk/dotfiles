@@ -6,6 +6,7 @@ local options = {
     rust = { "rustfmt", lsp_fallback = true },
     go = { "gofmt" },
     python = { "black" },
+    ocaml = { "ocamlformat" },
   },
 
   format_on_save = {

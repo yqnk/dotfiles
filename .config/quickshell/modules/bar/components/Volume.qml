@@ -16,6 +16,9 @@ Row {
         if (muted)
             return "\ueee8";
 
+        if (volume === 0)
+            return "\uf026-";
+
         if (volume < 0.33)
             return "\uf026";
 

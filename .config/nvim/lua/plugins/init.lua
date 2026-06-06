@@ -21,18 +21,30 @@ return {
     },
   },
 
+  {
+    "hrsh7th/nvim-cmp",
+    enabled = false,
+  },
+
   -- test new blink
   { import = "nvchad.blink.lazyspec" },
 
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim",
+        "lua",
+        "vimdoc",
+        "html",
+        "css",
+        "javascript",
+        "go",
+        "rust",
+        "c",
+      },
+    },
+  },
 
   {
     "lewis6991/gitsigns.nvim",
@@ -106,4 +118,6 @@ return {
     end,
     ft = { "java" },
   },
+
+  -- { "github/copilot.vim", lazy = false },
 }

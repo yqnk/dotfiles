@@ -6,16 +6,18 @@
 local M = {}
 
 M.base46 = {
-  theme = "everblush",
+  theme = "gruvbox",
   transparency = true,
 
   hl_override = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
+    BlinkCmpMenuBorder = { fg = "#22292b", bold = true },
+    FloatBorder = { fg = "#22292b", bold = true },
   },
 
   hl_add = {
-    -- WhichKeyBorder = { fg = "#22292b" },
+    WhichKeyBorder = { fg = "#22292b", bold = true },
     -- WhichKeyNormal = { bg = "#141b1e" },
   },
 }
@@ -37,10 +39,5 @@ M.ui = {
 }
 
 -- M.nvdash = { load_on_startup = true }
--- M.ui = {
---       tabufline = {
---          lazyload = false
---      }
--- }
 
 return M

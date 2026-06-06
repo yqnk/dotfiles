@@ -1,0 +1,9 @@
+{
+    "constructor": {
+        "prefix": "constructor",
+        "body": [
+            "constructor() {",
+            "}"
+        ]
+    }
+}

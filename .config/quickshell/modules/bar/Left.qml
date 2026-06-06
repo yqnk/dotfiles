@@ -18,7 +18,9 @@ Row {
         Menu {}
     }
 
-    Workspaces {}
+    Workspaces {
+        screen: modelData
+    }
 
     BarRect {
         FocusedWindow {}

@@ -5,5 +5,6 @@ ShellRoot {
     id: root
 
     Bar {}
-}
 
+    // VolumeOsd {}
+}

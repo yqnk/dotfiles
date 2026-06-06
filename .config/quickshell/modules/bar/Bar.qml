@@ -4,22 +4,28 @@ import "../../utils"
 import Quickshell
 import QtQuick
 
-PanelWindow {
-    anchors.top: true
-    anchors.left: true
-    anchors.right: true
-    implicitHeight: 28
-    color: Colors.withAlpha("#000000", 0.35)
+Variants {
+    model: Quickshell.screens
+    PanelWindow {
+        property var modelData
+        screen: modelData
 
-    Item {
-        anchors.fill: parent
+        anchors.top: true
+        anchors.left: true
+        anchors.right: true
+        implicitHeight: 28
+        color: Colors.withAlpha("#000000", 0.35)
 
-        Left {}
+        Item {
+            anchors.fill: parent
 
-        Middle {
-            anchors.centerIn: parent
+            Left {}
+
+            Middle {
+                anchors.centerIn: parent
+            }
+
+            Right {}
         }
-
-        Right {}
     }
 }

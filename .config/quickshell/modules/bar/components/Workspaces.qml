@@ -8,6 +8,7 @@ Rectangle {
     property int vpad: 2
     property int hpad: 4
     property int innerSpacing: 0
+    property var screen
 
     color: Colors.withAlpha("#ffffff", 0.08)
     border.color: Colors.withAlpha("#ffffff", 0.1)
@@ -21,13 +22,18 @@ Rectangle {
     implicitHeight: repeaterContainer.height + (2 * vpad)
     radius: 2
 
+    property var filteredWorkspaces: {
+        if (!screen) return Hyprland.workspaces.values;
+        return Hyprland.workspaces.values.filter(ws => ws.monitor?.name === screen.name);
+    }
+
     Row {
         id: repeaterContainer
         anchors.centerIn: parent
         spacing: parent.innerSpacing
 
         Repeater {
-            model: Hyprland.workspaces.values
+            model: parent.parent.filteredWorkspaces
 
             delegate: Item {
                 required property var modelData
@@ -55,7 +61,10 @@ Rectangle {
                     hoverEnabled: true
                     onEntered: parent.isHovered = true
                     onExited: parent.isHovered = false
-                    onClicked: Hyprland.dispatch("workspace " + parent.modelData.id)
+                    onClicked: () => {
+                        console.log(Hyprland.workspaces.values);
+                        Hyprland.dispatch("workspace " + parent.modelData.id);
+                    }
                 }
             }
         }

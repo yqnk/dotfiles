@@ -1,9 +1,22 @@
 require("nvchad.configs.lspconfig").defaults()
 
-local servers = { "html", "cssls", "jdtls", "pyright", "clangd", "vtsls" }
+local servers = {
+  "clangd",
+  "cssls",
+  "gopls",
+  "html",
+  "jdtls",
+  "ocamllsp",
+  "pyright",
+  "qmlls",
+  "rust_analyzer",
+  "tinymist",
+  "vtsls",
+}
+
 vim.lsp.enable(servers)
 
-vim.lsp.config('jdtls', {
+vim.lsp.config("jdtls", {
   settings = {
     java = {
       configuration = {
@@ -12,10 +25,10 @@ vim.lsp.config('jdtls', {
             name = "JavaSE-21",
             path = "/opt/jdk-21",
             default = true,
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    },
+  },
 })
--- read :h vim.lsp.config for changing options of lsp servers 
+-- read :h vim.lsp.config for changing options of lsp servers

@@ -1,0 +1,14 @@
+{
+    "vscode_snippet": {
+        "prefix": "vscode_snippet",
+        "body": [
+            "\"foo\": {",
+            "\t\"prefix\": \"foo\"",
+            "\t\"body\": [",
+            "\t\t\"local ${1:foo} = ${2:bar}\",",
+            "\t\treturn ${3:baz}",
+            "\t]",
+            "}"
+        ]
+    }
+}

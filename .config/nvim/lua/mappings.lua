@@ -59,13 +59,13 @@ map("n", "<leader>cmwe", "<cmd>CMakeCloseExecutor<cr>", { desc = "CMake Close Ou
 map("n", "<leader>cmwr", "<cmd>CMakeCloseRunner<cr>", { desc = "CMake Close Runner" })
 
 -- Go to XXX
-map("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Aller à la déclaration" })
-map("n", "gd", vim.lsp.buf.definition, { desc = "LSP Aller à la définition" })
-map("n", "K", vim.lsp.buf.hover, { desc = "LSP Afficher info (Hover)" })
-map("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Aller à l'implémentation" })
-map("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "LSP Aide signature" })
-map("n", "<leader>ra", vim.lsp.buf.rename, { desc = "LSP Renommer variable" })
-map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Actions de code" })
+-- map("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Aller à la déclaration" })
+-- map("n", "gd", vim.lsp.buf.definition, { desc = "LSP Aller à la définition" })
+-- map("n", "K", vim.lsp.buf.hover, { desc = "LSP Afficher info (Hover)" })
+-- map("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Aller à l'implémentation" })
+-- map("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "LSP Aide signature" })
+-- map("n", "<leader>ra", vim.lsp.buf.rename, { desc = "LSP Renommer variable" })
+-- map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Actions de code" })
 
 -- dap
 map("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle Breakpoint" })
