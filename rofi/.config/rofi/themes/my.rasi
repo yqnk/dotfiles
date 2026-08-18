@@ -1,0 +1,23 @@
+/* vim: set filetype=css : */
+
+/* everblush */
+* {
+  bg-col: #00000085;
+  bg-col-light: #1e2229;
+  border-col: #9f9f9f99;
+  transparent: #00000000;
+  selected-col: #1e2229;
+  blue: #81a2be;
+  cyan: #8abeb7;
+  green: #b5bd68;
+  magenta: #b294bb;
+  red: #cc6666;
+  yellow: #f0c674;
+  hoverbutton: #3b6c80;
+  fg-col: #c4c5c8;
+  fg-col2: #f8f8f8;
+  grey: #38474a;
+  width: 400;
+  placeholder-color: #808080;
+placeholder-text: " xz";
+}

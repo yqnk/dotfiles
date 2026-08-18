@@ -1,0 +1,100 @@
+require "nvchad.mappings"
+
+-- add yours here
+
+local map = vim.keymap.set
+local nomap = vim.keymap.del
+
+--general
+map("n", ";", ":", { desc = "CMD enter command mode" })
+map("i", "jk", "<ESC>")
+
+map({ "n", "v" }, "<A-j>", "<cmd> m +1 <CR>")
+map({ "n", "v" }, "<A-k>", "<cmd> m -2 <CR>")
+
+-- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
+-- conform (format)
+nomap({ "n", "x" }, "<leader>fm")
+map({ "n", "x" }, "<leader>f", function()
+  require("conform").format { lsp_fallback = true }
+end, { desc = "general format file " })
+
+-- nvimtree
+-- map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
+-- map("n", "<C-n>", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
+map("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "Neotree toggle" })
+map("n", "<C-n>", "<cmd>Neotree focus<CR>", { desc = "Neotree focus" })
+
+-- telescope
+map("n", "<leader>sg", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
+map("n", "<leader>sr", "<cmd>Telescope lsp_references<CR>", { desc = "telescope find references" })
+map("n", "<leader>sb", "<cmd>Telescope buffers<CR>", { desc = "telescope find buffers" })
+map("n", "<leader>sh", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
+map("n", "<leader>sm", "<cmd>Telescope marks<CR>", { desc = "telescope find marks" })
+map("n", "<leader>so", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find oldfiles" })
+map("n", "<leader>sf", "<cmd>Telescope find_files<CR>", { desc = "telescope find files" })
+map("n", "<leader>sc", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
+map("n", "<leader>ld", "<cmd>Telescope lsp_definitions<CR>", { desc = "telescope list definitions" })
+map("n", "<leader>li", "<cmd>Telescope lsp_implementations<CR>", { desc = "telescope list implementations" })
+map("n", "<leader>lt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "telescope list definitions" })
+
+map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
+map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
+
+-- cmake-tools
+map("n", "<leader>cmg", "<cmd>CMakeGenerate<cr>", { desc = "CMake Generate" })
+map("n", "<leader>cmb", "<cmd>CMakeBuild<cr>", { desc = "CMake Build" })
+map("n", "<leader>cmr", "<cmd>CMakeRun<cr>", { desc = "CMake Run" })
+map("n", "<leader>cmk", "<cmd>CMakeSelectKit<cr>", { desc = "CMake Select Kit (Compiler)" })
+map("n", "<leader>cmt", "<cmd>CMakeSelectBuildType<cr>", { desc = "CMake Build Type (Debug/Release)" })
+map("n", "<leader>cml", "<cmd>CMakeSelectLaunchTarget<cr>", { desc = "CMake Select Launch Target" })
+map("n", "<leader>cms", "<cmd>CMakeSelectBuildTarget<cr>", { desc = "CMake Select Build Target" })
+map("n", "<leader>cmc", "<cmd>CMakeClean<cr>", { desc = "CMake Clean Files" })
+map("n", "<leader>cmqe", "<cmd>CMakeStopExecutor<cr>", { desc = "CMake Stop Executor" })
+map("n", "<leader>cmqr", "<cmd>CMakeStopRunner<cr>", { desc = "CMake Stop Runner" })
+map("n", "<leader>cmoe", "<cmd>CMakeOpenExecutor<cr>", { desc = "CMake Open Output" })
+map("n", "<leader>cmor", "<cmd>CMakeOpenRunner<cr>", { desc = "CMake Open Runner" })
+map("n", "<leader>cmwe", "<cmd>CMakeCloseExecutor<cr>", { desc = "CMake Close Output" })
+map("n", "<leader>cmwr", "<cmd>CMakeCloseRunner<cr>", { desc = "CMake Close Runner" })
+
+-- Go to XXX
+-- map("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Aller à la déclaration" })
+-- map("n", "gd", vim.lsp.buf.definition, { desc = "LSP Aller à la définition" })
+-- map("n", "K", vim.lsp.buf.hover, { desc = "LSP Afficher info (Hover)" })
+-- map("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Aller à l'implémentation" })
+-- map("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "LSP Aide signature" })
+-- map("n", "<leader>ra", vim.lsp.buf.rename, { desc = "LSP Renommer variable" })
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Actions" })
+
+-- dap
+map("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle Breakpoint" })
+map("n", "<leader>dc", "<cmd>lua require'dap'.continue()<CR>", { desc = "Continue" })
+map("n", "<leader>di", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Step Into" })
+map("n", "<leader>do", "<cmd>lua require'dap'.step_over()<CR>", { desc = "Step Over" })
+map("n", "<leader>dO", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Step Out" })
+map("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<CR>", { desc = "Toggle Repl" })
+map("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Run Last" })
+map("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<CR>", { desc = "Toggle UI" })
+map("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<CR>", { desc = "Terminate" })
+
+-- dapui
+map("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<CR>", { desc = "Toggle UI" })
+map("n", "<leader>de", "<cmd>lua require'dapui'.eval()<CR>", { desc = "Evaluate" })
+
+-- hexdump
+map("n", "<leader>ad", "<cmd>lua require'hex'.dump()<CR>", { desc = "Dump Hex" })
+map("n", "<leader>aa", "<cmd>lua require'hex'.assemble()<CR>", { desc = "Dump Hex" })
+map("n", "<leader>at", "<cmd>lua require'hex'.toggle()<CR>", { desc = "Dump Hex" })
+
+nomap("n", "<leader>fw")
+nomap("n", "<leader>fb")
+nomap("n", "<leader>fh")
+nomap("n", "<leader>ma")
+nomap("n", "<leader>fo")
+nomap("n", "<leader>fz")
+nomap("n", "<leader>cm")
+nomap("n", "<leader>gt")
+nomap("n", "<leader>pt")
+nomap("n", "<leader>ff")
+nomap("n", "<leader>fa")

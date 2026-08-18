@@ -1,0 +1,146 @@
+# based on https://starship.rs/presets/pure-preset
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$nix_shell\
+$cmd_duration\
+$line_break\
+$jobs\
+$character"""
+
+# right_format = "$cmd_duration"
+
+[cmd_duration]
+min_time = 2000
+format = 'in [$duration]($style)'
+style = '#e5c76b'
+
+[directory]
+style = "blue"
+
+[character]
+success_symbol = "[➜](green)"
+error_symbol = "[➜](red)"
+vimcmd_symbol = "[❮](green)"
+
+[git_branch]
+format = "[$branch]($style)"
+style = "#e5c76b"
+
+[git_status]
+format = "[[( *$conflicted$untracked$modified$staged$renamed$deleted)](#ffafd7) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "#e5c76b"
+
+[jobs]
+symbol = "+"
+style = '#e5c76b'
+
+[nix_shell]
+disabled = false
+impure_msg = '[impure shell](bold cyan)'
+pure_msg = '[pure shell](bold #ffafd7)'
+unknown_msg = '[unknown shell](bold #e5c76b)'
+symbol = ' '
+format = 'via [$symbol$state( \($name\))](bold blue) '
+
+# # ~/.config/starship/starship.toml
+#
+# # Get editor completions based on the config schema
+# "$schema" = 'https://starship.rs/config-schema.json'
+#
+# add_newline = true
+#
+# command_timeout = 500
+#
+# right_format = '$cmd_duration'
+#
+# format = """
+# $hostname\
+# $directory\
+# $git_status\
+# $git_branch\
+# $git_state\
+# $line_break\
+# $python\
+# $character"""
+#
+# [cmd_duration]
+# min_time = 2000
+# format = 'in [$duration]($style)'
+# style = '#e5c76b'
+#
+# [character]
+# success_symbol = '[➜](bold #b5bd68)'
+# error_symbol = '[➜](bold #cc6666)'
+#
+# [username]
+# style_user = 'bold #c4c8c5'
+# style_root = '#b3b9b8'
+# format = '(#c4c8c5)[$user]($style) '
+# disabled = false
+# show_always = true
+#
+# [hostname]
+# ssh_only = false
+# format = '[$hostname](#e5c7cb) '
+# disabled = true
+#
+# [directory]
+# home_symbol = '~'
+# read_only_style = '137'
+# read_only = ' [r]'
+# format = '[$path/]($style)[$read_only]($read_only_style) '
+# style = 'white'
+#
+# [git_branch]
+# symbol = '*'
+# format = '[$branch]($style) '
+# style = '#e5c76b'
+#
+# [git_status]
+# format = '[$all_status]($style)'
+# style = '#f2baf2'
+# conflicted = '! '
+# untracked = '? '
+# modified = '~ '
+# staged = '+ '
+# renamed = '» '
+# deleted = '- '
+# stashed = '≡ '
+#
+# [rust]
+# disabled = true
+# [c]
+# disabled = true
+# [cmake]
+# disabled = true
+# [python]
+# disabled = true
+# [lua]
+# disabled = true
+# [meson]
+# disabled = true
+# [java]
+# disabled = true
+# [package]
+# disabled = true
+# [nodejs]
+# disabled = true
+# [pixi]
+# disabled = true
