@@ -18,6 +18,8 @@ mindustry-bin
 mindustry-server
 mongodb-bin
 mongodb-compass-bin
+mongodb-tools-bin
+ncurses5-compat-libs
 neofetch
 nix-zsh-completions
 nodejs-node-red
@@ -29,6 +31,7 @@ pokemmo
 python-uncompyle6
 python312
 rustrover
+rustrover-jre
 saleae-logic2
 subliminal
 surfer-waveform-git-bin
