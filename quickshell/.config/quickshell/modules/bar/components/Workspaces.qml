@@ -63,7 +63,7 @@ Rectangle {
                     onExited: parent.isHovered = false
                     onClicked: () => {
                         console.log(Hyprland.workspaces.values);
-                        Hyprland.dispatch("workspace " + parent.modelData.id);
+                        Hyprland.dispatch("hl.dsp.focus({ workspace = " + parent.modelData.id + " })");
                     }
                 }
             }
