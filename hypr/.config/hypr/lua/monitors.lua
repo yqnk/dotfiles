@@ -34,7 +34,7 @@ end
 -- monitor, without following it (mirrors the old movetoworkspacesilent).
 function M.moveToWorkspace(n)
 	return function()
-		hl.dispatch(hl.dsp.window.move({ workspace = activeOffset() + n, silent = true }))
+		hl.dispatch(hl.dsp.window.move({ workspace = activeOffset() + n, follow = false }))
 	end
 end
 
