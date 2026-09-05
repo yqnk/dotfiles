@@ -20,8 +20,8 @@ bindkey '^R' history-incremental-search-backward
 # bindkey '^R' history-incremental-pattern-search-backward
 
 # aliases
+alias la='ls -a'
 alias ls='ls --color=auto -F'
-alias bat='bat --color=always'
 alias diff='diff --color=auto'
 alias grep='grep --color=auto'
 alias ip='ip -c=auto'
@@ -36,6 +36,7 @@ alias nvi="nvim"
 alias nv="nvim"
 alias n="nvim"
 alias zen="zen-browser"
+alias shift_srt="py ~/projects/shift_srt.py"
 
 # alias de terroriste
 alias cd="z"
@@ -63,7 +64,7 @@ mountafs() {
   echo "Warning: you may need a new ticket: kinit -f LOGIN@CRI.EPITA.FR"
   cd
   mkdir -p "afs"
-  sshfs -o reconnect LOGIN@ssh.cri.epita.fr:/afs/cri.epita.fr/user/L/LO/LOGIN/u/ afs
+  sshfs -o reconnect xavier.login@ssh.cri.epita.fr:/afs/cri.epita.fr/user/y/ya/login/u/ afs
   cd "afs"
 }
 
@@ -111,7 +112,7 @@ fakeCommit() {
 }
 
 # $1 is the threshould
-packlines() {
+pack() {
   local threshold=$1
   local prev=""
   local count=0
