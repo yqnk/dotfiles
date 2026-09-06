@@ -28,10 +28,10 @@ PopupWindow {
         width: implicitWidth
         height: implicitHeight
 
-        radius: 2
-        color: Colors.withAlpha("#121220", 0.35)
-        border.color: Colors.withAlpha("#ffffff", 0.1)
-        border.width: 1
+        radius: 10
+        color: Colors.withAlpha("#12121a", 0.42)
+        border.color: Colors.withAlpha("#ffffff", 0.10)
+        border.width: 0.5
 
         Column {
             id: contentColumn

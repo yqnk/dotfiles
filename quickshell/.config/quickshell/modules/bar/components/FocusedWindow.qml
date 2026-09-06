@@ -4,7 +4,7 @@ import QtQuick
 import Quickshell.Hyprland
 
 BarText {
-    property int maxLength: 16
+    property int maxLength: 32
 
     function trimTitle(): string {
         var title = Hyprland.activeToplevel?.title;

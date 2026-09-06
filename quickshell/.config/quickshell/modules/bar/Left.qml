@@ -9,7 +9,7 @@ Row {
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
     anchors.leftMargin: 6
-    spacing: 6
+    spacing: 8
 
     BarRect {
         id: menuBtn

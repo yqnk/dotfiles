@@ -6,7 +6,7 @@ import QtQuick
 Row {
     id: midSection
     anchors.verticalCenter: parent.verticalCenter
-    spacing: 4
+    spacing: 8
 
     // TODO: le calendar LINK AVEC MON GOOGLE CALENDAR ??
 

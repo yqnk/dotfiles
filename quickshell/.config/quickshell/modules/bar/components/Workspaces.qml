@@ -10,9 +10,8 @@ Rectangle {
     property int innerSpacing: 0
     property var screen
 
-    color: Colors.withAlpha("#ffffff", 0.08)
-    border.color: Colors.withAlpha("#ffffff", 0.1)
-    border.width: 1
+    color: Colors.withAlpha("#ffffff", 0.06)
+    border.width: 0
 
     property string unfocusedColor: Colors.withAlpha("#ffffff", 0.2)
     property string focusedColor: Colors.withAlpha("#ffffff", 0.8)
@@ -20,7 +19,7 @@ Rectangle {
 
     implicitWidth: repeaterContainer.width + (2 * hpad)
     implicitHeight: repeaterContainer.height + (2 * vpad)
-    radius: 2
+    radius: 8
 
     property var filteredWorkspaces: {
         if (!screen) return Hyprland.workspaces.values;
@@ -46,7 +45,7 @@ Rectangle {
                 BarText {
                     id: label
                     anchors.centerIn: parent
-                    text: parent.modelData.id
+                    text: parent.modelData.id < 0 ? "S" : ((parent.modelData.id - 1) % 10) + 1
                     color: parent.modelData.focused ? focusedColor : parent.isHovered ? hoveredColor : unfocusedColor
 
                     Behavior on color {

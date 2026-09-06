@@ -7,50 +7,32 @@ Row {
     id: rightSection
     anchors.right: parent.right
     anchors.verticalCenter: parent.verticalCenter
-    anchors.rightMargin: 4
-    spacing: 4
+    anchors.rightMargin: 6
+    spacing: 6
 
     property var barWindow
 
-    // Systray
+    // Wifi / volume / battery cluster, opens the unified Control Center menu
     BarRect {
-        id: trayRect
-        onClicked: systemTray.toggle()
+        id: controlRect
+        onClicked: controlCenter.toggle()
 
-        SystemTray {
-            id: systemTray
+        ControlCenter {
+            id: controlCenter
             barWindow: rightSection.barWindow
-            anchorItem: trayRect
+            anchorItem: controlRect
         }
     }
 
-    // CPU / RAM / Disk usage, unfolds on hover
-    SystemStats {
-        mode: "hover"
-    }
-
-    // Color picker
-    // BarRect {
-    //     onClicked: {
-    //         picker.pickColor();
-    //     }
-    //
-    //     ColorPicker {
-    //         id: picker
-    //     }
-    // }
-
-    // Network + Volume + Bluetooth + Mic (?)
+    // Todo list
     BarRect {
-        Network {}
-        Volume {}
+        id: todoRect
+        onClicked: todoList.toggle()
+
+        TodoList {
+            id: todoList
+            barWindow: rightSection.barWindow
+            anchorItem: todoRect
+        }
     }
-
-    // Battery
-    BarRect {
-        Battery {}
-    }
-
-    // Un rect de screenshot avec les 4 types que j'ai dans ma config
-
 }
