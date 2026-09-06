@@ -5,6 +5,7 @@ hl.layer_rule({
 	match = { namespace = "waybar|rofi|quickshell|qs" },
 	blur  = true,
 	xray  = true,
+    ignore_alpha = 0.5,
 })
 
 hl.config({
