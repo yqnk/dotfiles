@@ -8,6 +8,7 @@ local options = {
     python = { "black" },
     ocaml = { "ocamlformat" },
     asm = { "asmfmt" },
+    nix = { "nixfmt" },
   },
 
   format_on_save = {
