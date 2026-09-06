@@ -2,7 +2,7 @@ local M = {
   window = {
     width = 30,
     mappings = {
-      ["<tab>"] = "tab_open_or_expand",
+      ["<tab>"] = "open",
       ["<cr>"] = "open",
     },
   },
