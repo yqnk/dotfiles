@@ -162,6 +162,7 @@ spice-vdagent
 starship
 steam
 stow
+strace
 stylua
 sudo
 swappy

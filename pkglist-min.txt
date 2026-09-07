@@ -85,6 +85,7 @@ rsync
 screen
 starship
 stow
+strace
 stylua
 sudo
 swappy
