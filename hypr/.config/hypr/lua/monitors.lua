@@ -1,27 +1,17 @@
-hl.monitor({ output = "eDP-1", mode = "1920x1080", position = "0x0",     scale = "1.5" })
-hl.monitor({ output = "DP-5",  mode = "1920x1080", position = "0x-1080", scale = "1" })
-hl.monitor({ output = "DP-3",  mode = "1920x1080", position = "auto",    scale = "1.5" })
-hl.monitor({ output = "DP-1",  mode = "1920x1080", position = "0x-1080", scale = "1" })
-hl.monitor({ output = "DP-4",  mode = "1920x1080", position = "0x-1080", scale = "1" })
-hl.monitor({ output = "DP-2",  mode = "1920x1080", position = "0x-1080", scale = "1" })
+hl.monitor({ output = "", mode = "preferred", position = "auto-up", scale = "1" })
+hl.monitor({ output = "eDP-1", mode = "preferred", position = "0x0", scale = "1.5" })
 
 local M = {}
 
-local OFFSETS = {
-	["eDP-1"] = 0,
-	["DP-1"]  = 10,
-	["DP-2"]  = 20,
-	["DP-3"]  = 30,
-	["DP-4"]  = 40,
-	["DP-5"]  = 50,
-}
-
 local function activeOffset()
 	local mon = hl.get_active_monitor()
-	if not mon then
+	if not mon or mon.name == "eDP-1" then
 		return 0
 	end
-	return OFFSETS[mon.name] or 0
+
+	local index = tonumber(mon.name:match("(%d+)$")) or 0
+	local base = mon.name:match("^HDMI") and 50 or 0
+	return base + index * 10
 end
 
 function M.focusWorkspace(n)
@@ -30,8 +20,6 @@ function M.focusWorkspace(n)
 	end
 end
 
--- Move the active window to workspace `n` of the currently focused
--- monitor, without following it (mirrors the old movetoworkspacesilent).
 function M.moveToWorkspace(n)
 	return function()
 		hl.dispatch(hl.dsp.window.move({ workspace = activeOffset() + n, follow = false }))
