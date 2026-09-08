@@ -108,18 +108,18 @@ QtObject {
         return total;
     }
 
-    // "1:04:22" — for the live timer.
+    // "1h04m22s" — for the live timer.
     function fmtClock(ms) {
         const s = Math.floor(ms / 1000);
         const pad = n => (n < 10 ? "0" + n : "" + n);
-        return Math.floor(s / 3600) + ":" + pad(Math.floor(s / 60) % 60) + ":" + pad(s % 60);
+        return Math.floor(s / 3600) + "h" + pad(Math.floor(s / 60) % 60) + "m" + pad(s % 60) + "s";
     }
 
-    // "3h12" / "12m" / "0m" — for totals.
+    // "03:12:05" — for totals (day, week, per-task).
     function fmtShort(ms) {
-        const m = Math.floor(ms / 60000);
+        const s = Math.floor(Math.max(0, ms) / 1000);
         const pad = n => (n < 10 ? "0" + n : "" + n);
-        return m >= 60 ? Math.floor(m / 60) + "h" + pad(m % 60) : m + "m";
+        return pad(Math.floor(s / 3600)) + ":" + pad(Math.floor(s / 60) % 60) + ":" + pad(s % 60);
     }
 
     function newId() {

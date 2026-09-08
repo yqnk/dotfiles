@@ -314,6 +314,7 @@ TrayPopup {
             }
 
             BarText {
+                id: addGlyph
                 anchors.left: parent.left
                 anchors.leftMargin: 9
                 anchors.verticalCenter: parent.verticalCenter
@@ -323,9 +324,14 @@ TrayPopup {
 
             TextInput {
                 id: addField
-                anchors.fill: parent
-                anchors.leftMargin: 26
+                // Anchored to the glyph rather than a fixed inset, so the gap
+                // stays right whatever the glyph's advance width is.
+                anchors.left: addGlyph.right
+                anchors.leftMargin: 6
+                anchors.right: parent.right
                 anchors.rightMargin: 9
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 verticalAlignment: TextInput.AlignVCenter
                 clip: true
                 color: "#ffffff"

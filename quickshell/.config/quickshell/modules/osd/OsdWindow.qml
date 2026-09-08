@@ -38,8 +38,8 @@ PanelWindow {
 
         radius: 4
         color: "transparent"
-        border.color: Colors.withAlpha("#ffffff", 0.1)
-        border.width: 1
+        border.color: Colors.withAlpha("#ffffff", 0.32)
+        border.width: 1.5
 
         Item {
             id: contentColumn

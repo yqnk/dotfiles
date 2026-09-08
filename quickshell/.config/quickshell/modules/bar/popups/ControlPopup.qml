@@ -204,6 +204,10 @@ TrayPopup {
             rowWidth: root.rowWidth
         }
 
+        MediaSection {
+            rowWidth: root.rowWidth
+        }
+
         // Sliders card
         Rectangle {
             width: root.rowWidth
