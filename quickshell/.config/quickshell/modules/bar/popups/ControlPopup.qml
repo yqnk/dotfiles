@@ -8,8 +8,9 @@ import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 import QtQuick
 
-// Unified macOS-style Control Center: Wi-Fi tile, a card holding the volume
-// and brightness pill sliders, and a footer of battery / system chips.
+// Unified macOS-style Control Center: Wi-Fi and Bluetooth tiles, a card
+// holding the volume and brightness pill sliders, and a footer of
+// battery / system chips.
 TrayPopup {
     id: root
 
@@ -22,6 +23,9 @@ TrayPopup {
 
     // Glyph for the bar cluster, kept in sync with the Wi-Fi section's state.
     readonly property string wifiGlyph: wifi.networkIcon()
+
+    // Glyph for the bar cluster, kept in sync with the Bluetooth section.
+    readonly property string bluetoothGlyph: bluetooth.bluetoothIcon()
 
     // Volume
     property real localVolume: sink?.audio?.volume ?? 0
@@ -70,10 +74,12 @@ TrayPopup {
 
     onVisibleChanged: {
         statsProc.running = true;
-        if (visible)
+        if (visible) {
             wifi.refresh();
-        else
+        } else {
             wifi.collapse();
+            bluetooth.collapse();
+        }
     }
 
     FileView {
@@ -190,6 +196,11 @@ TrayPopup {
 
         WifiSection {
             id: wifi
+            rowWidth: root.rowWidth
+        }
+
+        BluetoothSection {
+            id: bluetooth
             rowWidth: root.rowWidth
         }
 

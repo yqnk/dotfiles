@@ -4,8 +4,9 @@ import "../popups"
 import Quickshell.Services.Pipewire
 import QtQuick
 
-// Compact macOS-style status cluster: wifi, volume and battery glyphs in a
-// single clickable group that opens one unified Control Center menu.
+// Compact macOS-style status cluster: wifi, bluetooth, volume and battery
+// glyphs in a single clickable group that opens one unified Control
+// Center menu.
 Row {
     id: root
     spacing: 6
@@ -40,6 +41,11 @@ Row {
     BarText {
         anchors.verticalCenter: parent.verticalCenter
         text: controlPopup.wifiGlyph
+    }
+
+    BarText {
+        anchors.verticalCenter: parent.verticalCenter
+        text: controlPopup.bluetoothGlyph
     }
 
     BarText {

@@ -11,6 +11,7 @@ Column {
     id: root
 
     property int rowWidth: 260
+    property int maxListHeight: 180
     property string ssid: ""
     property int strength: 0
     property bool radioOn: true
@@ -282,89 +283,122 @@ Column {
             topPadding: 2
             spacing: 2
 
-            Repeater {
-                model: root.networks
+            // Scrollable network list: grows with content up to
+            // maxListHeight, then scrolls instead of stretching the popup.
+            Flickable {
+                id: netFlick
+                width: root.rowWidth
+                height: Math.min(netList.height, root.maxListHeight)
+                contentWidth: root.rowWidth
+                contentHeight: netList.height
+                clip: true
+                boundsBehavior: Flickable.StopAtBounds
+                flickDeceleration: 4000
+                maximumFlickVelocity: 2000
+                interactive: contentHeight > height
 
-                delegate: Column {
-                    id: netRow
-                    required property var modelData
+                Column {
+                    id: netList
                     width: root.rowWidth
                     spacing: 2
 
-                    Rectangle {
-                        width: root.rowWidth
-                        implicitHeight: 26
-                        radius: 8
-                        color: rowArea.containsMouse ? Colors.withAlpha("#ffffff", 0.10) : "transparent"
+                    Repeater {
+                        model: root.networks
 
-                        Behavior on color {
-                            ColorAnimation { duration: 150 }
-                        }
+                        delegate: Column {
+                            id: netRow
+                            required property var modelData
+                            width: root.rowWidth
+                            spacing: 2
 
-                        Row {
-                            id: rowContent
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.leftMargin: 14
-                            anchors.rightMargin: 12
-                            spacing: 6
+                            Rectangle {
+                                width: root.rowWidth
+                                implicitHeight: 26
+                                radius: 8
+                                color: rowArea.containsMouse ? Colors.withAlpha("#ffffff", 0.10) : "transparent"
 
-                            BarText {
-                                width: rowContent.width - 40 - rowContent.spacing * 2
-                                anchors.verticalCenter: parent.verticalCenter
-                                elide: Text.ElideRight
-                                font.pixelSize: 11
-                                font.bold: netRow.modelData.active
-                                text: netRow.modelData.ssid
+                                Behavior on color {
+                                    ColorAnimation { duration: 150 }
+                                }
+
+                                Row {
+                                    id: rowContent
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.leftMargin: 14
+                                    anchors.rightMargin: 12
+                                    spacing: 6
+
+                                    BarText {
+                                        width: rowContent.width - 40 - rowContent.spacing * 2
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        elide: Text.ElideRight
+                                        font.pixelSize: 11
+                                        font.bold: netRow.modelData.active
+                                        text: netRow.modelData.ssid
+                                    }
+
+                                    BarText {
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        font.pixelSize: 10
+                                        color: Colors.withAlpha("#ffffff", 0.45)
+                                        text: netRow.modelData.secured ? "" : ""
+                                    }
+
+                                    BarText {
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        font.pixelSize: 11
+                                        color: netRow.modelData.active ? root.accent : "#ffffff"
+                                        text: root.attemptSsid === netRow.modelData.ssid ? "…" : (netRow.modelData.active ? "" : "")
+                                    }
+                                }
+
+                                MouseArea {
+                                    id: rowArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    onClicked: root.connectTo(netRow.modelData.ssid, netRow.modelData.secured)
+                                }
                             }
 
-                            BarText {
-                                anchors.verticalCenter: parent.verticalCenter
-                                font.pixelSize: 10
-                                color: Colors.withAlpha("#ffffff", 0.45)
-                                text: netRow.modelData.secured ? "" : ""
-                            }
+                            Rectangle {
+                                visible: root.pendingPasswordSsid === netRow.modelData.ssid
+                                width: root.rowWidth
+                                implicitHeight: 26
+                                radius: 8
+                                color: Colors.withAlpha("#ffffff", 0.08)
 
-                            BarText {
-                                anchors.verticalCenter: parent.verticalCenter
-                                font.pixelSize: 11
-                                color: netRow.modelData.active ? root.accent : "#ffffff"
-                                text: root.attemptSsid === netRow.modelData.ssid ? "…" : (netRow.modelData.active ? "" : "")
+                                TextInput {
+                                    anchors.fill: parent
+                                    anchors.leftMargin: 14
+                                    anchors.rightMargin: 12
+                                    verticalAlignment: TextInput.AlignVCenter
+                                    color: "#ffffff"
+                                    font.pixelSize: 11
+                                    font.family: "JetBrainsMono Nerd Font"
+                                    echoMode: TextInput.Password
+                                    focus: root.pendingPasswordSsid === netRow.modelData.ssid
+                                    onAccepted: {
+                                        root.submitPassword(netRow.modelData.ssid, text);
+                                        text = "";
+                                    }
+                                }
                             }
-                        }
-
-                        MouseArea {
-                            id: rowArea
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onClicked: root.connectTo(netRow.modelData.ssid, netRow.modelData.secured)
                         }
                     }
+                }
 
-                    Rectangle {
-                        visible: root.pendingPasswordSsid === netRow.modelData.ssid
-                        width: root.rowWidth
-                        implicitHeight: 26
-                        radius: 8
-                        color: Colors.withAlpha("#ffffff", 0.08)
-
-                        TextInput {
-                            anchors.fill: parent
-                            anchors.leftMargin: 14
-                            anchors.rightMargin: 12
-                            verticalAlignment: TextInput.AlignVCenter
-                            color: "#ffffff"
-                            font.pixelSize: 11
-                            font.family: "JetBrainsMono Nerd Font"
-                            echoMode: TextInput.Password
-                            focus: root.pendingPasswordSsid === netRow.modelData.ssid
-                            onAccepted: {
-                                root.submitPassword(netRow.modelData.ssid, text);
-                                text = "";
-                            }
-                        }
-                    }
+                // Scroll indicator: only while the list overflows.
+                Rectangle {
+                    anchors.right: parent.right
+                    anchors.rightMargin: 2
+                    width: 3
+                    radius: 1.5
+                    color: Colors.withAlpha("#ffffff", 0.25)
+                    visible: netFlick.interactive
+                    height: netFlick.height * (netFlick.height / netFlick.contentHeight)
+                    y: netFlick.contentY + (netFlick.height - height) * netFlick.contentY / Math.max(1, netFlick.contentHeight - netFlick.height)
                 }
             }
 

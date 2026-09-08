@@ -14,8 +14,18 @@ Rectangle {
     default property alias innerContent: contentContainer.data
 
     signal clicked
+    signal rightClicked
 
     radius: 7
+    // Let neighbouring pills be glued into one shape: square off the side
+    // that touches, keep the outer side rounded.
+    property real leftRadius: radius
+    property real rightRadius: radius
+    topLeftRadius: leftRadius
+    bottomLeftRadius: leftRadius
+    topRightRadius: rightRadius
+    bottomRightRadius: rightRadius
+
     implicitWidth: contentContainer.childrenRect.width + (hpad * 2)
     implicitHeight: contentContainer.childrenRect.height + (vpad * 2)
 
@@ -39,7 +49,8 @@ Rectangle {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onClicked: barRectRoot.clicked()
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onClicked: mouse => mouse.button === Qt.RightButton ? barRectRoot.rightClicked() : barRectRoot.clicked()
     }
 
     Row {

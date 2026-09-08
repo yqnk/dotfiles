@@ -25,6 +25,7 @@ Variants {
 
             Middle {
                 anchors.centerIn: parent
+                barWindow: panelWindow
             }
 
             Right {
