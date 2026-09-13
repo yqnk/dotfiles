@@ -20,22 +20,46 @@ Column {
     readonly property bool radioOn: adapter?.enabled ?? false
 
     // Paired first, then connected, then by name — keeps the useful
-    // devices pinned above whatever the scan turns up.
+    // devices pinned above whatever the scan turns up. Devices that never
+    // reported a name are dropped: bluez falls back to the address there,
+    // so the list would fill up with unusable MAC rows.
     readonly property var devices: {
-        const list = (adapter?.devices?.values ?? []).slice();
+        const list = (adapter?.devices?.values ?? []).filter(d => root.deviceLabel(d) !== "");
         list.sort((a, b) => {
             if (a.connected !== b.connected)
                 return a.connected ? -1 : 1;
             if (a.paired !== b.paired)
                 return a.paired ? -1 : 1;
-            return (a.deviceName || a.address).localeCompare(b.deviceName || b.address);
+            return root.deviceLabel(a).localeCompare(root.deviceLabel(b));
         });
         return list;
     }
 
-    readonly property var connectedDevice: devices.find(d => d.connected) ?? null
+    // Taken from the unfiltered set so a nameless connected device still
+    // drives the tile icon and subtitle even though it stays out of the list.
+    readonly property var connectedDevice: (adapter?.devices?.values ?? []).find(d => d.connected) ?? null
 
     spacing: 2
+
+    // A device's display name, or "" when bluez only knows its address.
+    // The address shows up as "AA:BB:..." or "AA-BB-..." depending on which
+    // field it leaked into, so both spellings are rejected.
+    function deviceLabel(dev): string {
+        if (!dev)
+            return "";
+        const mac = (dev.address || "").replace(/[:-]/g, "").toLowerCase();
+        for (const candidate of [dev.deviceName, dev.name]) {
+            const label = (candidate || "").trim();
+            if (label === "")
+                continue;
+            if (label.replace(/[:-]/g, "").toLowerCase() === mac)
+                continue;
+            if (/^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.test(label))
+                continue;
+            return label;
+        }
+        return "";
+    }
 
     function bluetoothIcon(): string {
         if (!radioOn)
@@ -170,7 +194,7 @@ Column {
                     if (!root.radioOn)
                         return "Off";
                     if (root.connectedDevice)
-                        return root.connectedDevice.deviceName || root.connectedDevice.address;
+                        return root.deviceLabel(root.connectedDevice) || root.connectedDevice.address;
                     return "Not connected";
                 }
             }
@@ -259,7 +283,7 @@ Column {
                                     elide: Text.ElideRight
                                     font.pixelSize: 11
                                     font.bold: devRow.modelData.connected
-                                    text: devRow.modelData.deviceName || devRow.modelData.address
+                                    text: root.deviceLabel(devRow.modelData)
                                 }
 
                                 BarText {

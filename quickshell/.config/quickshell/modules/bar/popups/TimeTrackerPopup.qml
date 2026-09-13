@@ -10,7 +10,7 @@ TrayPopup {
     id: root
 
     radius: 12
-    readonly property int rowWidth: 260
+    readonly property int rowWidth: 280
     readonly property int maxRecent: 6
 
     // Task id currently being renamed inline, "" when none.
