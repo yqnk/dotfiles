@@ -4,10 +4,12 @@ local servers = {
   "asm_lsp",
   "autotools_ls",
   "clangd",
+  "cmake",
   "cssls",
   "gopls",
   "html",
   "jdtls",
+  "nil_ls",
   "ocamllsp",
   "pyright",
   "qmlls",
@@ -34,6 +36,11 @@ vim.lsp.config("jdtls", {
       },
     },
   },
+})
+
+vim.lsp.config("shuck", {
+  cmd = { "shuck", "server" },
+  filetypes = { "sh", "bash", "zsh" },
 })
 
 -- read :h vim.lsp.config for changing options of lsp servers
