@@ -2,6 +2,7 @@ import "components"
 import "../../utils"
 
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 
 Variants {
@@ -10,6 +11,10 @@ Variants {
         id: panelWindow
         property var modelData
         screen: modelData
+
+        // Layer surfaces get no keyboard by default, so popups never saw
+        // Escape. Take on-demand focus only while a popup is open.
+        WlrLayershell.keyboardFocus: PopupState.anyOpen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
         anchors.top: true
         anchors.left: true
