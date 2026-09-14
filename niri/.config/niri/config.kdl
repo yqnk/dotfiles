@@ -100,12 +100,46 @@ hotkey-overlay {
 screenshot-path "~/documents/screenshots/Screenshot_%Y-%m-%d_%H-%M-%S.png"
 
 animations {
-    off
+    // Short easing curves everywhere: no springs, no overshoot.
+    // Fewer rendered frames per interaction = less GPU wake-up = less power.
+    slowdown 1.3000000000000003
 
-    slowdown 1.0
-    workspace-switch { curve "cubic-bezier" 0.42 0.0 0.58 1.0; }
-    window-open { curve "cubic-bezier" 0.42 0.0 0.58 1.0; }
-    horizontal-view-movement { curve "cubic-bezier" 0.17 0.67 0.83 0.67; }
+    workspace-switch {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+    window-open {
+        duration-ms 120
+        curve "ease-out-quad"
+    }
+    window-close {
+        duration-ms 120
+        curve "ease-out-quad"
+    }
+    window-movement {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+    window-resize {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+    horizontal-view-movement {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+    config-notification-open-close {
+        duration-ms 200
+        curve "ease-out-quad"
+    }
+    screenshot-ui-open {
+        duration-ms 120
+        curve "ease-out-quad"
+    }
+    overview-open-close {
+        duration-ms 200
+        curve "ease-out-quad"
+    }
 }
 
 window-rule {
