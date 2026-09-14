@@ -160,7 +160,7 @@ alias tmp='cd /tmp'
 alias zen='zen-browser'
 alias ..='cd ..'
 alias asciiquarium='asciiquarium -t -s'
-alias wf-recorder="$XDG_CONFIG_HOME/hypr/rec.sh"
+alias wf-recorder="$HOME/.local/bin/rec.sh"
 alias shift_srt='python3 ~/projects/shift_srt.py'
 
 # alias de terroriste
