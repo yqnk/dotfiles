@@ -25,3 +25,19 @@ $ stow kitty nvim
 ```
 
 By default, stow symlinks the content of every folder you give him to another folder in the parent folder.
+
+## Compositors
+
+Both **Hyprland** and **niri** are configured and can be stowed side by side; pick the session
+at login.
+
+```sh
+$ stow hypr  # Hyprland
+$ stow niri  # niri
+$ stow quickshell rofi kitty mako scripts   # shared
+```
+
+The niri session uses `awww` for the wallpaper and `xwayland-satellite` for X11 apps instead of
+`hyprpaper` and Hyprland's built-in Xwayland. Screenshots use niri's built-in screenshot UI
+instead of `grimblast`. The Quickshell bar is shared, but its workspace and focused-window
+widgets still talk to the Hyprland IPC and stay empty under niri.
