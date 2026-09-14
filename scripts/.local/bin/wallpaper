@@ -1,0 +1,32 @@
+#!/bin/sh
+
+WALLPAPER=${1:-$HOME/.local/share/wallpapers/wall.jpg}
+TRANSITION=${WALLPAPER_TRANSITION:-fade}
+
+blank_outputs() {
+    awww query | sed -n 's/^[^:]*: \([^:]*\): .*currently displaying: color:.*/\1/p' | paste -sd,
+}
+
+pgrep -x awww-daemon >/dev/null 2>&1 || awww-daemon &
+
+i=0
+while ! awww query >/dev/null 2>&1; do
+    i=$((i + 1))
+    [ "$i" -gt 100 ] && exit 1
+    sleep 0.1
+done
+
+awww img "$WALLPAPER" --transition-type "$TRANSITION"
+
+niri msg --json event-stream | while read -r event; do
+    case $event in
+    *WorkspacesChanged*) ;;
+    *) continue ;;
+    esac
+
+    sleep 0.5
+
+    blank=$(blank_outputs)
+    [ -n "$blank" ] || continue
+    awww img "$WALLPAPER" --transition-type "$TRANSITION" --outputs "$blank"
+done
