@@ -16,14 +16,36 @@ Rectangle {
     property string unfocusedColor: Colors.withAlpha("#ffffff", 0.2)
     property string focusedColor: Colors.withAlpha("#ffffff", 0.8)
     property string hoveredColor: Colors.withAlpha("#ffffff", 0.5)
+    property string urgentColor: "#e06c75"
 
     implicitWidth: repeaterContainer.width + (2 * hpad)
     implicitHeight: repeaterContainer.height + (2 * vpad)
     radius: 8
 
+    // Compositor-agnostic model: { key, label, focused, urgent } plus the
+    // backend-specific handle used when the pill is clicked.
     property var filteredWorkspaces: {
-        if (!screen) return Hyprland.workspaces.values;
-        return Hyprland.workspaces.values.filter(ws => ws.monitor?.name === screen.name);
+        if (Niri.available) {
+            return Niri.workspaces.filter(ws => !screen || ws.output === screen.name).map(ws => ({
+                        key: "niri:" + ws.id,
+                        // niri workspaces can be named; fall back to the
+                        // per-output index, which is what Mod+<n> refers to.
+                        label: ws.name ? ws.name : ws.idx,
+                        // isActive, not isFocused: each bar highlights the
+                        // current workspace of its own monitor.
+                        focused: ws.isActive,
+                        urgent: ws.isUrgent,
+                        niri: ws
+                    }));
+        }
+
+        return Hyprland.workspaces.values.filter(ws => !screen || ws.monitor?.name === screen.name).map(ws => ({
+                    key: "hypr:" + ws.id,
+                    label: ws.id < 0 ? "S" : ((ws.id - 1) % 10) + 1,
+                    focused: ws.focused,
+                    urgent: false,
+                    hyprland: ws
+                }));
     }
 
     Row {
@@ -45,8 +67,8 @@ Rectangle {
                 BarText {
                     id: label
                     anchors.centerIn: parent
-                    text: parent.modelData.id < 0 ? "S" : ((parent.modelData.id - 1) % 10) + 1
-                    color: parent.modelData.focused ? focusedColor : parent.isHovered ? hoveredColor : unfocusedColor
+                    text: parent.modelData.label
+                    color: parent.modelData.urgent ? urgentColor : parent.modelData.focused ? focusedColor : parent.isHovered ? hoveredColor : unfocusedColor
 
                     Behavior on color {
                         ColorAnimation {
@@ -61,8 +83,11 @@ Rectangle {
                     onEntered: parent.isHovered = true
                     onExited: parent.isHovered = false
                     onClicked: () => {
-                        console.log(Hyprland.workspaces.values);
-                        Hyprland.dispatch("hl.dsp.focus({ workspace = " + parent.modelData.id + " })");
+                        const ws = parent.modelData;
+                        if (ws.niri)
+                            Niri.focusWorkspace(ws.niri);
+                        else
+                            Hyprland.dispatch("workspace " + ws.hyprland.id);
                     }
                 }
             }
