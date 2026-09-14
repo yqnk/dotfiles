@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-export lockdate=$(date)
 brightness=$(brightnessctl get)
 
 fadein() {
