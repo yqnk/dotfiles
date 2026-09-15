@@ -100,13 +100,13 @@ hotkey-overlay {
 screenshot-path "~/documents/screenshots/Screenshot_%Y-%m-%d_%H-%M-%S.png"
 
 animations {
-    // Short easing curves everywhere: no springs, no overshoot.
+    // Short easing curves nearly everywhere, no overshoot.
     // Fewer rendered frames per interaction = less GPU wake-up = less power.
     slowdown 1.3000000000000003
 
     workspace-switch {
-        duration-ms 150
-        curve "ease-out-quad"
+        // Critically damped spring: smooth ramp-in/ramp-out, no overshoot.
+        spring damping-ratio=1.0 stiffness=700 epsilon=0.0001
     }
     window-open {
         duration-ms 120
@@ -227,6 +227,7 @@ binds {
     Mod+V { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
     Mod+W { toggle-column-tabbed-display; }
+    Mod+J hotkey-overlay-title="Toggle horizontal/vertical layout" { spawn "bash" "-c" "~/.config/niri/scripts/toggle-layout.sh"; }
     Mod+P { switch-preset-column-width; }
     Mod+Shift+P { switch-preset-column-width-back; }
     Mod+Ctrl+C { center-visible-columns; }
@@ -333,4 +334,20 @@ gestures {
     hot-corners {
         off
     }
+}
+output "DP-4" {
+    mode "1920x1080@60.000"
+
+    scale 1.0
+
+    transform "normal"
+    position x=-12 y=0
+}
+output "DP-6" {
+    mode "1920x1080@60.000"
+
+    scale 1.0
+
+    transform "normal"
+    position x=-1932 y=0
 }
