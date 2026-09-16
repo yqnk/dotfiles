@@ -70,7 +70,9 @@ unsetopt FLOW_CONTROL
 # keybinds
 # `zle -al`
 
-bindkey -e
+bindkey -v
+export KEYTIMEOUT=1
+
 bindkey "^[[3~"    delete-char
 bindkey "^[[3;5~"  delete-word
 bindkey "^[[1;5C"  forward-word
@@ -162,6 +164,9 @@ alias ..='cd ..'
 alias asciiquarium='asciiquarium -t -s'
 alias wf-recorder="$HOME/.local/bin/rec.sh"
 alias shift_srt='python3 ~/projects/shift_srt.py'
+
+# git aliases
+alias lg='lazygit'
 
 # alias de terroriste
 alias cd='z'

@@ -351,3 +351,11 @@ output "DP-6" {
     transform "normal"
     position x=-1932 y=0
 }
+output "DP-1" {
+    mode "1920x1080@60.000"
+
+    scale 1.0
+
+    transform "normal"
+    position x=-320 y=0
+}
