@@ -1,34 +1,20 @@
-#!/bin/zsh
+#!/bin/sh
+# Dim the backlight in a few steps, lock, then bring it back.
 
-brightness=$(brightnessctl get)
+pidof -q hyprlock && exit 0
 
-fadein() {
-    current_brightness=$(brightnessctl get)
+target=19 # percent, the old 18000/96000
+cur=$(brightnessctl -m | cut -d, -f4 | tr -d %)
 
-    if (( current_brightness > 18000 )); then
-        while (( current_brightness > 18000 )); do
-            brightnessctl set "3%-"
-            sleep 0.01
-            current_brightness=$(brightnessctl get)
-        done
-    fi
-}
-
-fadein
-hyprlock
-
-wait
-
-fadeout() {
-    current_brightness=$(brightnessctl get)
-
-    while (( current_brightness < brightness )); do
-        brightnessctl set "+3%"
-        sleep 0.01
-        current_brightness=$(brightnessctl get)
+fade() { # from to
+    for step in 1 2 3 4; do
+        brightnessctl -q set "$(($1 + ($2 - $1) * step / 4))%"
+        sleep 0.03
     done
 }
 
-fadeout
+[ "$cur" -gt "$target" ] && fade "$cur" "$target"
+hyprlock
+[ "$cur" -gt "$target" ] && fade "$target" "$cur"
 
 exit 0

@@ -32,6 +32,21 @@ output "eDP-1" {
     position x=320 y=1080
 }
 
+output "DP-4" {
+    mode "1920x1080@60.000"
+    position x=-12 y=0
+}
+
+output "DP-6" {
+    mode "1920x1080@60.000"
+    position x=-1932 y=0
+}
+
+output "DP-1" {
+    mode "1920x1080@60.000"
+    position x=-320 y=0
+}
+
 layout {
     gaps 4
 
@@ -64,9 +79,6 @@ layout {
         color "#0007"
     }
 
-    struts {
-    }
-
     background-color "transparent"
 }
 
@@ -82,11 +94,7 @@ blur {
 
 environment {
     XCURSOR_SIZE "24"
-    HYPRCURSOR_SIZE "24"
-    DISPLAY ":0"
 }
-
-spawn-at-startup "xwayland-satellite"
 
 spawn-sh-at-startup "~/.local/bin/wallpaper"
 spawn-at-startup "mako"
@@ -102,7 +110,7 @@ screenshot-path "~/documents/screenshots/Screenshot_%Y-%m-%d_%H-%M-%S.png"
 animations {
     // Short easing curves nearly everywhere, no overshoot.
     // Fewer rendered frames per interaction = less GPU wake-up = less power.
-    slowdown 1.3000000000000003
+    slowdown 1.3
 
     workspace-switch {
         // Critically damped spring: smooth ramp-in/ramp-out, no overshoot.
@@ -151,6 +159,13 @@ window-rule {
     }
 }
 
+// Media and games stay fully opaque
+window-rule {
+    match app-id=r"^(mpv|vlc|imv|gimp.*|steam_app_\d+)$"
+    match title="^Picture-in-Picture$"
+    opacity 1.0
+}
+
 window-rule {
     match app-id=r"firefox$" title="^Picture-in-Picture$"
     open-floating true
@@ -186,12 +201,11 @@ binds {
 
     Mod+Return hotkey-overlay-title="Terminal" { spawn "kitty"; }
     Mod+D hotkey-overlay-title="Launcher" { spawn-sh "rofi -show drun && ~/.config/rofi/rofiplaceholder"; }
-    Mod+L hotkey-overlay-title="Lock the screen" { spawn "sh" "-c" "~/.local/bin/lockscreen"; }
+    Mod+L hotkey-overlay-title="Lock the screen" { spawn "~/.local/bin/lockscreen"; }
     Mod+C hotkey-overlay-title="Pick a color" { spawn-sh "niri msg pick-color | tail -n1 | awk '{print $2}' | wl-copy"; }
     Mod+R hotkey-overlay-title="Restart the shell" { spawn-sh "pkill -x qs; setsid -f qs"; }
 
     Mod+A repeat=false { close-window; }
-    Mod+M { quit; }
 
     // Focus
     Mod+Left  { focus-column-left; }
@@ -227,7 +241,7 @@ binds {
     Mod+V { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
     Mod+W { toggle-column-tabbed-display; }
-    Mod+J hotkey-overlay-title="Toggle horizontal/vertical layout" { spawn "bash" "-c" "~/.config/niri/scripts/toggle-layout.sh"; }
+    Mod+J hotkey-overlay-title="Toggle horizontal/vertical layout" { spawn "~/.config/niri/scripts/toggle-layout.sh"; }
     Mod+P { switch-preset-column-width; }
     Mod+Shift+P { switch-preset-column-width-back; }
     Mod+Ctrl+C { center-visible-columns; }
@@ -330,28 +344,4 @@ gestures {
     hot-corners {
         off
     }
-}
-output "DP-4" {
-    mode "1920x1080@60.000"
-
-    scale 1.0
-
-    transform "normal"
-    position x=-12 y=0
-}
-output "DP-6" {
-    mode "1920x1080@60.000"
-
-    scale 1.0
-
-    transform "normal"
-    position x=-1932 y=0
-}
-output "DP-1" {
-    mode "1920x1080@60.000"
-
-    scale 1.0
-
-    transform "normal"
-    position x=-320 y=0
 }

@@ -3,17 +3,15 @@
 # and vertical (all windows stacked in a single column) layout.
 set -euo pipefail
 
-tiled() {
-  niri msg --json windows \
-    | jq --argjson ws "$1" '[.[] | select(.workspace_id == $ws and .is_floating == false)]'
-}
-
-ws=$(niri msg --json windows | jq '[.[] | select(.is_focused)][0].workspace_id')
-[ "$ws" = "null" ] && exit 0
-
-windows=$(tiled "$ws")
-total=$(jq 'length' <<<"$windows")
-columns=$(jq '[.[].layout.pos_in_scrolling_layout[0]] | unique | length' <<<"$windows")
+# One IPC round-trip: total tiled windows and distinct columns on the focused workspace.
+read -r total columns < <(
+  niri msg --json windows | jq -r '
+    ([.[] | select(.is_focused)][0].workspace_id) as $ws
+    | if $ws == null then "0 0" else
+        [.[] | select(.workspace_id == $ws and .is_floating == false)]
+        | "\(length) \([.[].layout.pos_in_scrolling_layout[0]] | unique | length)"
+      end'
+)
 
 [ "$total" -lt 2 ] && exit 0
 

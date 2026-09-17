@@ -1,8 +1,10 @@
-#!/bin/zsh
+#!/bin/sh
+# Region recording. Run again to stop the current one.
 
-current_date=$(date +'%Y-%m-%d_%H:%M:%S')
+pkill -INT -x wf-recorder && exit 0
+
 records_dir="$HOME/documents/records"
-mkdir -p $records_dir
-wf-recorder -b 0 -c libx264 -p b=5M -g "$(slurp)" -f $records_dir/recording_$current_date.mp4
+mkdir -p "$records_dir"
 
-exit 0
+region=$(slurp) || exit 0
+exec wf-recorder -b 0 -c libx264 -p b=5M -g "$region" -f "$records_dir/recording_$(date +'%Y-%m-%d_%H:%M:%S').mp4"
