@@ -68,7 +68,7 @@ TrayPopup {
     property real diskPct: 0
 
     property var battery: UPower.displayDevice
-    readonly property int batteryPercent: Math.round((battery?.percentage ?? 0) * 100)
+    readonly property int batteryPercent: BatteryNotifier.percent
     readonly property bool charging: !UPower.onBattery
     readonly property color batteryColor: charging ? "#4caf50" : (batteryPercent < 20 ? "#f44336" : "#ffffff")
 

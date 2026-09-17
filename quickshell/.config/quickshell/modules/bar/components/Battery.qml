@@ -5,7 +5,7 @@ import Quickshell.Services.UPower
 
 Row {
     property var battery: UPower.displayDevice
-    property real percent: Math.round(battery?.percentage * 100) ?? 0
+    property real percent: BatteryNotifier.percent
     property bool charging: !(UPower.onBattery)
     property bool low: !charging && percent < 20
 

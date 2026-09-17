@@ -6,7 +6,9 @@ import Quickshell.Services.UPower
 
 QtObject {
     property var battery: UPower.displayDevice
-    property real percent: Math.round(battery?.percentage * 100) ?? 0
+    // Firmware reports charge_full as the charge limit, so UPower hits 100%
+    // at the threshold. Scale back so the stop point reads as the limit.
+    property real percent: Math.round((battery?.percentage ?? 0) * chargeLimit)
     property bool charging: !(UPower.onBattery)
 
     property bool notified20: false
