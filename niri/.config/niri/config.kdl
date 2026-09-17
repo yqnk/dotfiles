@@ -302,10 +302,6 @@ binds {
     // Screenshots. F11 keeps the Hyprland muscle memory; Print works too.
     F11       { screenshot; }
     Print     { screenshot; }
-    Shift+F11 { screenshot-screen; }
-    Alt+Print { screenshot-window; }
-    Ctrl+F11 allow-when-locked=true { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
-    Alt+F11 allow-when-locked=true { spawn-sh "pidof slurp || grim -g \"$(slurp)\" /tmp/ocr_image.png && tesseract /tmp/ocr_image.png stdout -l $(tesseract --list-langs | awk 'NR>1{print $1}' | tr '\\n' '+' | sed 's/+$//') | wl-copy && rm /tmp/ocr_image.png && notify-send OCR 'Text copied to clipboard'"; }
 
     // Screen recording, scripts/.local/bin/rec.sh
     Mod+F11 { spawn-sh "~/.local/bin/rec.sh"; }
