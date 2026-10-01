@@ -190,8 +190,7 @@ mountafs() {
   echo "Warning: you may need a new ticket: kinit -f LOGIN@CRI.EPITA.FR"
   cd || return
   mkdir -p afs
-  sshfs -o reconnect xavier.login@ssh.cri.epita.fr:/afs/cri.epita.fr/user/y/ya/login/u/ afs
-  cd afs
+  echo sshfs -o reconnect xavier.login@ssh.cri.epita.fr:/afs/cri.epita.fr/user/y/ya/login/u/ afs
 }
 
 umountafs() {
