@@ -2,6 +2,7 @@ import "../../../utils"
 import "../utils"
 
 import Quickshell.Bluetooth
+import Quickshell.Io
 import QtQuick
 
 // Bluetooth block of the control center, mirroring WifiSection: a round
@@ -18,6 +19,11 @@ Column {
 
     readonly property BluetoothAdapter adapter: Bluetooth.defaultAdapter
     readonly property bool radioOn: adapter?.enabled ?? false
+    readonly property bool blocked: adapter?.state === BluetoothAdapterState.Blocked
+
+    // Set while rfkill is being lifted; the adapter can only be powered
+    // once bluez sees the unblock, so enabling waits for the state change.
+    property bool pendingEnable: false
 
     // Paired first, then connected, then by name — keeps the useful
     // devices pinned above whatever the scan turns up. Devices that never
@@ -100,6 +106,11 @@ Column {
     function toggleRadio() {
         if (!adapter)
             return;
+        if (blocked) {
+            pendingEnable = true;
+            unblockProc.running = true;
+            return;
+        }
         adapter.enabled = !adapter.enabled;
         if (!adapter.enabled)
             collapse();
@@ -109,6 +120,25 @@ Column {
         expanded = false;
         if (adapter && adapter.discovering)
             adapter.discovering = false;
+    }
+
+    Process {
+        id: unblockProc
+        command: ["rfkill", "unblock", "bluetooth"]
+        onExited: code => {
+            if (code !== 0)
+                root.pendingEnable = false;
+        }
+    }
+
+    Connections {
+        target: root.adapter
+        function onStateChanged() {
+            if (root.pendingEnable && !root.blocked) {
+                root.pendingEnable = false;
+                root.adapter.enabled = true;
+            }
+        }
     }
 
     // Scan only while the fold is open — discovery is expensive and
@@ -191,6 +221,8 @@ Column {
                 text: {
                     if (!root.adapter)
                         return "Unavailable";
+                    if (root.blocked)
+                        return root.pendingEnable ? "Unblocking…" : "Blocked";
                     if (!root.radioOn)
                         return "Off";
                     if (root.connectedDevice)

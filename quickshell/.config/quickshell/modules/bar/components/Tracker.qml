@@ -18,8 +18,6 @@ QtObject {
     readonly property int idleThresholdMs: 5 * 60 * 1000
     // A timer running this long is almost certainly one you forgot to stop.
     readonly property int longRunMs: 8 * 60 * 60 * 1000
-    // Working this long with no timer running -> one nudge.
-    readonly property int untrackedNudgeMs: 45 * 60 * 1000
 
     readonly property var projectPalette: ["#4caf50", "#3b82f6", "#f59e0b", "#ec4899", "#a78bfa", "#14b8a6", "#ef4444", "#84cc16"]
 
@@ -237,8 +235,6 @@ QtObject {
         file.adapter.running = ({});
         awayStart = 0;
         awayEnd = 0;
-        lastStopped = Date.now();
-        notifiedUntracked = false;
         persist();
     }
 
@@ -313,9 +309,7 @@ QtObject {
         keepAway();
     }
 
-    property double lastStopped: 0
     property bool notifiedLongRun: false
-    property bool notifiedUntracked: false
 
     function notify(summary, body, urgency) {
         notifyProc.command = ["notify-send", "-u", urgency || "normal", "-a", "Tracker", summary, body || ""];
@@ -356,11 +350,6 @@ QtObject {
                 root.notifiedLongRun = true;
                 root.notify("Timer running for " + root.fmtShort(root.elapsedMs), "\"" + root.running.name + "\" — did you forget to stop it?", "normal");
             }
-
-            if (!root.isRunning && !root.idle.isIdle && !root.notifiedUntracked && root.lastStopped > 0 && Date.now() - root.lastStopped >= root.untrackedNudgeMs) {
-                root.notifiedUntracked = true;
-                root.notify("Not tracking", "Nothing tracked for " + root.fmtShort(Date.now() - root.lastStopped) + ".", "low");
-            }
         }
     }
 
@@ -378,11 +367,6 @@ QtObject {
                     root.notify("Away for " + root.fmtShort(root.awayMs), "\"" + root.running.name + "\" kept running. Open the tracker to discard it.", "normal");
                 } else {
                     root.keepAway();
-                }
-                // Fresh activity restarts the untracked nudge window.
-                if (!root.isRunning) {
-                    root.notifiedUntracked = false;
-                    root.lastStopped = Math.max(root.lastStopped, Date.now());
                 }
             }
         }
