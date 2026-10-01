@@ -103,3 +103,4 @@ nomap("n", "<leader>fa")
 map("n", "<leader>gb", "<cmd>Gitsigns blame<CR>", { desc = "Git blame" })
 map("n", "<leader>gd", "<cmd>Gitsigns diffthis<CR>", { desc = "Git diff this" })
 map("n", "<leader>gtw", "<cmd>Gitsigns toggle_word_diff<CR>", { desc = "Git diff words" })
+

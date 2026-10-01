@@ -7,7 +7,7 @@ local M = {}
 
 M.base46 = {
   theme = "everblush",
-  transparency = true,
+  transparency = false,
 
   hl_override = {
     Comment = { italic = true },
@@ -34,7 +34,7 @@ M.ui = {
   },
 
   statusline = {
-    theme = "minimal",
+    theme = "default",
   },
 }
 
