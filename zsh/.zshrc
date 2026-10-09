@@ -21,6 +21,8 @@ export GOPATH="$HOME/.go"
 export CMAKE_GENERATOR=Ninja
 export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
 export LS_COLORS="ow=01;37:di=01;37:ex=01;32:*.png=01;33:*.svg=01;33:*.jpeg=01;33:*.jpg=01;33"
 
 # pfetch
@@ -90,7 +92,11 @@ setopt ALWAYS_TO_END
 setopt COMPLETE_IN_WORD
 setopt AUTO_PARAM_SLASH
 setopt GLOB_COMPLETE
+setopt AUTO_LIST
 unsetopt MENU_COMPLETE
+# show the match list on the first Tab instead of only inserting the common
+# prefix (LIST_AMBIGUOUS is on by default and suppresses that list)
+unsetopt LIST_AMBIGUOUS
 
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*' extra-verbose yes
@@ -164,6 +170,8 @@ alias ..='cd ..'
 alias asciiquarium='asciiquarium -t -s'
 alias wf-recorder="$HOME/.local/bin/rec.sh"
 alias shift_srt='python3 ~/projects/shift_srt.py'
+alias k="kubectl"
+alias sk="sudo kubectl"
 
 # git aliases
 alias lg='lazygit'
