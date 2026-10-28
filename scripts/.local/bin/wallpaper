@@ -1,6 +1,6 @@
 #!/bin/sh
 
-WALLPAPER=${1:-$HOME/.local/share/wallpapers/wall.jpg}
+WALLPAPER=${1:-$HOME/.local/share/wallpapers/wallpaper-3840x2160.png}
 TRANSITION=${WALLPAPER_TRANSITION:-fade}
 
 blank_outputs() {

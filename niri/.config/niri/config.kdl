@@ -15,7 +15,7 @@ input {
 
     mouse {
         accel-profile "flat"
-        accel-speed -0.3
+        accel-speed 0.0
     }
 
 
@@ -24,27 +24,27 @@ input {
 
 output "DP-5" {
     scale 1
-    position x=0 y=0
+    position x=-1932 y=0
 }
 
 output "eDP-1" {
     scale 1.5
-    position x=320 y=1080
+    position x=-1574 y=1080
 }
 
 output "DP-4" {
     mode "1920x1080@60.000"
-    position x=-12 y=0
+    position x=-1894 y=0
 }
 
 output "DP-6" {
     mode "1920x1080@60.000"
-    position x=-1932 y=0
+    position x=-20 y=0
 }
 
 output "DP-1" {
     mode "1920x1080@60.000"
-    position x=-320 y=0
+    position x=-1892 y=0
 }
 
 layout {
@@ -334,6 +334,7 @@ binds {
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
     Mod+Shift+E { quit; }
+    Mod+M { quit; }
     Mod+Ctrl+Shift+P { power-off-monitors; }
 }
 cursor {
@@ -344,4 +345,20 @@ gestures {
     hot-corners {
         off
     }
+}
+output "DP-7" {
+    mode "1920x1080@60.000"
+
+    scale 1.0
+
+    transform "normal"
+    position x=-1940 y=0
+}
+output "DP-2" {
+    mode "1920x1080@60.000"
+
+    scale 1.0
+
+    transform "normal"
+    position x=-2499 y=0
 }
