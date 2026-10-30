@@ -66,7 +66,7 @@ layout {
 
     border {
         width 2
-        active-gradient from="#414551" to="#4b5b75" angle=45
+        active-gradient from="#313331" to="#3b3b35" angle=45
         inactive-color "#33333355"
         urgent-color "#9b0000"
     }
@@ -210,8 +210,8 @@ binds {
     // Focus
     Mod+Left  { focus-column-left; }
     Mod+Right { focus-column-right; }
-    Mod+Up    { focus-window-up; }
-    Mod+Down  { focus-window-down; }
+    Mod+Up    { focus-workspace-up; }
+    Mod+Down  { focus-workspace-down; }
 
     // Move
     Mod+Shift+Left  { move-column-left; }
@@ -241,7 +241,6 @@ binds {
     Mod+V { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
     Mod+W { toggle-column-tabbed-display; }
-    Mod+J hotkey-overlay-title="Toggle horizontal/vertical layout" { spawn "~/.config/niri/scripts/toggle-layout.sh"; }
     Mod+P { switch-preset-column-width; }
     Mod+Shift+P { switch-preset-column-width-back; }
     Mod+Ctrl+C { center-visible-columns; }
