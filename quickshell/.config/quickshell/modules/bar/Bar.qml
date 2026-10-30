@@ -21,7 +21,7 @@ Variants {
         anchors.right: true
         implicitHeight: 28
 
-        color: Colors.withAlpha("#111c28", 0.55)
+        color: Colors.withAlpha("#070f10", 0.75)
 
         Item {
             anchors.fill: parent
