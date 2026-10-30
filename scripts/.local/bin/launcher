@@ -1,0 +1,11 @@
+#!/bin/sh
+# rofi, with one of the placeholder lines picked at random.
+#
+# The placeholder used to be injected by rewriting themes/my.rasi, which made
+# a tracked file dirty on every launch. -theme-str does the same job without
+# touching anything on disk.
+
+placeholders="$HOME/.config/rofi/themes/placeholders.txt"
+text=$(shuf -n1 "$placeholders" 2>/dev/null) || text=""
+
+exec rofi -show drun -theme-str "entry { placeholder: \"$text\"; }"
