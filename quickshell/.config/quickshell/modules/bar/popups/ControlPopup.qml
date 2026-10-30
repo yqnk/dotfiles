@@ -21,9 +21,6 @@ TrayPopup {
 
     property PwNode sink: null
 
-    // Glyph for the bar cluster, kept in sync with the Wi-Fi section's state.
-    readonly property string wifiGlyph: wifi.networkIcon()
-
     // Glyph for the bar cluster, kept in sync with the Bluetooth section.
     readonly property string bluetoothGlyph: bluetooth.bluetoothIcon()
 
@@ -39,29 +36,6 @@ TrayPopup {
         }
     }
 
-    function volumeIcon(): string {
-        if (sink?.audio?.muted)
-            return "";
-        if (localVolume === 0)
-            return "";
-        if (localVolume < 0.5)
-            return "";
-        return "";
-    }
-
-    // Brightness — same backlight device the OSD reads.
-    property string backlight: "intel_backlight"
-    property int brightnessMax: 1
-    property int brightnessCurrent: 0
-    readonly property real brightnessPct: brightnessMax > 0 ? brightnessCurrent / brightnessMax : 0
-
-    function commitBrightness(ratio) {
-        const pct = Math.round(Math.max(1, Math.min(100, ratio * 100)));
-        brightnessCurrent = Math.round(brightnessMax * pct / 100);
-        brightnessProc.command = ["brightnessctl", "-d", root.backlight, "set", pct + "%"];
-        brightnessProc.running = true;
-    }
-
     // System stats
     property real cpuPct: 0
     property real ramPct: 0
@@ -73,29 +47,13 @@ TrayPopup {
     readonly property color batteryColor: charging ? "#4caf50" : (batteryPercent < 20 ? "#f44336" : "#ffffff")
 
     onVisibleChanged: {
-        statsProc.running = true;
         if (visible) {
-            wifi.refresh();
+            statsProc.running = true;
+            Network.refresh();
         } else {
             wifi.collapse();
             bluetooth.collapse();
         }
-    }
-
-    FileView {
-        path: "/sys/class/backlight/" + root.backlight + "/max_brightness"
-        onLoaded: root.brightnessMax = parseInt(text().trim())
-    }
-
-    FileView {
-        path: "/sys/class/backlight/" + root.backlight + "/brightness"
-        watchChanges: true
-        onLoaded: root.brightnessCurrent = parseInt(text().trim())
-        onFileChanged: reload()
-    }
-
-    Process {
-        id: brightnessProc
     }
 
     Process {
@@ -206,6 +164,7 @@ TrayPopup {
 
         MediaSection {
             rowWidth: root.rowWidth
+            popupVisible: root.visible
         }
 
         // Sliders card
@@ -225,7 +184,7 @@ TrayPopup {
 
                 BarSlider {
                     width: parent.width
-                    icon: root.volumeIcon()
+                    icon: Glyphs.volume(root.localVolume, root.sink?.audio?.muted ?? false)
                     value: root.sink?.audio?.muted ? 0 : root.localVolume
                     onMoved: ratio => root.commitVolume(ratio)
                     onReleased: root.localVolume = Qt.binding(() => root.sink?.audio?.volume ?? 0)
@@ -234,8 +193,8 @@ TrayPopup {
                 BarSlider {
                     width: parent.width
                     icon: ""
-                    value: root.brightnessPct
-                    onMoved: ratio => root.commitBrightness(ratio)
+                    value: Brightness.pct
+                    onMoved: ratio => Brightness.set(ratio)
                 }
             }
         }

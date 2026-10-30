@@ -12,10 +12,13 @@ Column {
 
     property int rowWidth: 260
     property int maxListHeight: 180
-    property string ssid: ""
-    property int strength: 0
-    property bool radioOn: true
     property bool expanded: false
+
+    // Live Wi-Fi state is owned by the Network singleton: the bar is built
+    // once per screen, and polling here meant one nmcli pair per screen every
+    // ten seconds, forever.
+    readonly property string ssid: Network.ssid
+    readonly property bool radioOn: Network.radioOn
 
     property var networks: []
     property var savedNames: []
@@ -26,20 +29,6 @@ Column {
     readonly property color accent: "#3b82f6"
 
     spacing: 2
-
-    function networkIcon(): string {
-        if (!radioOn)
-            return "󰤭";
-        if (ssid === "")
-            return "󰤭";
-        if (strength < 25)
-            return "󰤟";
-        if (strength < 50)
-            return "󰤢";
-        if (strength < 75)
-            return "󰤥";
-        return "󰤨";
-    }
 
     function isSaved(name) {
         return savedNames.indexOf(name) !== -1;
@@ -56,20 +45,23 @@ Column {
         }
     }
 
+    // The password goes to nmcli over stdin, never as an argument: arguments
+    // are readable by any process of this user through /proc/<pid>/cmdline.
     function submitPassword(name, pw) {
         if (pw.length === 0)
             return;
         errorText = "";
         attemptSsid = name;
-        connectProc.command = ["nmcli", "device", "wifi", "connect", name, "password", pw];
+        pendingSecret = pw;
+        connectProc.command = ["nmcli", "--ask", "device", "wifi", "connect", name];
         connectProc.running = true;
     }
 
     function toggleRadio() {
-        radioProc.command = ["nmcli", "radio", "wifi", radioOn ? "off" : "on"];
-        radioProc.running = true;
-        radioOn = !radioOn;
-        if (!radioOn)
+        // Read the target first: setRadio() flips Network.radioOn right away.
+        const on = !radioOn;
+        Network.setRadio(on);
+        if (!on)
             collapse();
     }
 
@@ -80,8 +72,7 @@ Column {
     }
 
     function refresh() {
-        stateProc.running = true;
-        radioStateProc.running = true;
+        Network.refresh();
     }
 
     onExpandedChanged: {
@@ -92,64 +83,25 @@ Column {
         }
     }
 
-    Timer {
-        interval: 10000
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: root.refresh()
-    }
-
-    Process {
-        id: stateProc
-        command: ["nmcli", "-t", "-f", "ACTIVE,SSID,SIGNAL", "dev", "wifi"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                for (const line of text.split("\n")) {
-                    const parts = line.split(":");
-                    if (parts[0] === "yes") {
-                        root.ssid = parts[1];
-                        root.strength = parseInt(parts[2]) || 0;
-                        return;
-                    }
-                }
-                root.ssid = "";
-                root.strength = 0;
-            }
-        }
-    }
-
-    Process {
-        id: radioStateProc
-        command: ["nmcli", "-t", "radio", "wifi"]
-        stdout: StdioCollector {
-            onStreamFinished: root.radioOn = text.trim() === "enabled"
-        }
-    }
-
-    Process {
-        id: radioProc
-        onExited: root.refresh()
-    }
-
+    // SSID last: it is the only field that may contain the ":" separator.
     Process {
         id: scanProc
-        command: ["nmcli", "-t", "-f", "SSID,SIGNAL,SECURITY,ACTIVE", "dev", "wifi", "list", "--rescan", "yes"]
+        command: ["nmcli", "-t", "-f", "SIGNAL,SECURITY,ACTIVE,SSID", "dev", "wifi", "list", "--rescan", "yes"]
         stdout: StdioCollector {
             onStreamFinished: {
                 const seen = {};
                 const list = [];
                 for (const line of text.split("\n")) {
-                    const parts = line.split(":");
-                    const name = parts[0];
+                    const parts = Network.fields(line);
+                    const name = parts.slice(3).join(":");
                     if (!name || seen[name])
                         continue;
                     seen[name] = true;
                     list.push({
                         ssid: name,
-                        signal: parseInt(parts[1]) || 0,
-                        secured: (parts[2] || "").length > 0,
-                        active: parts[3] === "yes"
+                        signal: parseInt(parts[0]) || 0,
+                        secured: (parts[1] || "").length > 0,
+                        active: parts[2] === "yes"
                     });
                 }
                 list.sort((a, b) => b.signal - a.signal);
@@ -163,13 +115,25 @@ Column {
         command: ["nmcli", "-t", "-f", "NAME", "connection", "show"]
         stdout: StdioCollector {
             onStreamFinished: {
-                root.savedNames = text.split("\n").filter(n => n.length > 0);
+                root.savedNames = text.split("\n").filter(n => n.length > 0).map(n => Network.fields(n)[0]);
             }
         }
     }
 
+    // Held only between submitPassword() and nmcli asking for it.
+    property string pendingSecret: ""
+
     Process {
         id: connectProc
+        stdinEnabled: true
+        onStarted: {
+            if (root.pendingSecret !== "") {
+                write(root.pendingSecret + "\n");
+                root.pendingSecret = "";
+            }
+            // Closes stdin after flushing, so nmcli never waits for more input.
+            stdinEnabled = false;
+        }
         onExited: exitCode => {
             if (exitCode !== 0) {
                 if (root.pendingPasswordSsid === "")
@@ -182,6 +146,7 @@ Column {
                 root.refresh();
             }
             root.attemptSsid = "";
+            root.pendingSecret = "";
         }
     }
 
@@ -225,7 +190,7 @@ Column {
             BarText {
                 anchors.centerIn: parent
                 font.pixelSize: 14
-                text: root.networkIcon()
+                text: Network.icon
             }
 
             MouseArea {

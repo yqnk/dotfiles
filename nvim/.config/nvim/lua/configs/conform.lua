@@ -3,7 +3,7 @@ local options = {
     lua = { "stylua" },
     css = { "prettier" },
     html = { "prettier" },
-    rust = { "rustfmt", lsp_fallback = true },
+    rust = { "rustfmt" },
     go = { "gofmt" },
     python = { "black" },
     ocaml = { "ocamlformat" },

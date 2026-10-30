@@ -17,6 +17,18 @@ QtObject {
     // ordered by output, then by the index niri assigns within that output.
     property var workspaces: []
 
+    // Title of the focused window, "" when nothing has focus.
+    property string focusedTitle: ""
+
+    // id -> title. Mutated in place, so focusedTitle is assigned explicitly
+    // after every event instead of being bound to this.
+    readonly property var titles: ({})
+    property double focusedId: -1
+
+    function syncTitle() {
+        root.focusedTitle = root.titles[root.focusedId] || "";
+    }
+
     // niri's focus-workspace takes an index relative to the focused output,
     // so hop to the workspace's monitor first. Arguments are passed to sh
     // positionally, never interpolated into the command string.
@@ -78,6 +90,47 @@ QtObject {
                     updated.isFocused = ws.id === activated.id;
                 return updated;
             });
+            return;
+        }
+
+        if (event.WindowsChanged) {
+            const titles = {};
+            let focused = -1;
+            for (const w of event.WindowsChanged.windows) {
+                titles[w.id] = w.title || "";
+                if (w.is_focused)
+                    focused = w.id;
+            }
+            // Replace wholesale: this event carries the full window list.
+            for (const key of Object.keys(root.titles))
+                delete root.titles[key];
+            Object.assign(root.titles, titles);
+            root.focusedId = focused;
+            root.syncTitle();
+            return;
+        }
+
+        if (event.WindowOpenedOrChanged) {
+            const w = event.WindowOpenedOrChanged.window;
+            root.titles[w.id] = w.title || "";
+            if (w.is_focused)
+                root.focusedId = w.id;
+            root.syncTitle();
+            return;
+        }
+
+        if (event.WindowClosed) {
+            delete root.titles[event.WindowClosed.id];
+            if (root.focusedId === event.WindowClosed.id)
+                root.focusedId = -1;
+            root.syncTitle();
+            return;
+        }
+
+        if (event.WindowFocusChanged) {
+            const id = event.WindowFocusChanged.id;
+            root.focusedId = id === null || id === undefined ? -1 : id;
+            root.syncTitle();
             return;
         }
 

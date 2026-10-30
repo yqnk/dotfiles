@@ -47,24 +47,50 @@ QtObject {
         return d.getTime();
     }
 
-    readonly property double todayMs: rangeMs(dayStart, dayStart + 86400000)
-    readonly property double weekMs: rangeMs(weekStart, weekStart + 7 * 86400000)
+    // Closed entries only. These walk the whole history, so they are kept out
+    // of anything that depends on `now`: with a year of entries, recomputing
+    // them once a second was tens of thousands of list steps per second.
+    readonly property double closedTodayMs: closedRangeMs(dayStart, dayStart + 86400000)
+    readonly property double closedWeekMs: closedRangeMs(weekStart, weekStart + 7 * 86400000)
 
-    // [{name, color, ms}] for today, biggest first.
-    readonly property var todayByProject: {
+    // {project: ms} for today, closed entries only.
+    readonly property var closedTodayByProject: {
         const from = dayStart;
         const to = from + 86400000;
         const acc = {};
-        const add = (p, ms) => {
-            if (ms <= 0)
-                return;
-            const key = p || "";
-            acc[key] = (acc[key] || 0) + ms;
-        };
-        for (const e of entries)
-            add(e.project, overlap(e.start, e.end, from, to));
-        if (isRunning)
-            add(running.project, overlap(running.start, now, from, to));
+        for (const e of entries) {
+            const ms = overlap(e.start, e.end, from, to);
+            if (ms > 0)
+                acc[e.project || ""] = (acc[e.project || ""] || 0) + ms;
+        }
+        return acc;
+    }
+
+    // {taskId: ms} for today, closed entries only.
+    readonly property var closedTodayByTask: {
+        const from = dayStart;
+        const to = from + 86400000;
+        const acc = {};
+        for (const e of entries) {
+            const ms = overlap(e.start, e.end, from, to);
+            if (ms > 0)
+                acc[e.taskId] = (acc[e.taskId] || 0) + ms;
+        }
+        return acc;
+    }
+
+    // The running timer is a single addition on top of the cached totals.
+    readonly property double runningTodayMs: isRunning ? overlap(running.start, now, dayStart, dayStart + 86400000) : 0
+    readonly property double todayMs: closedTodayMs + runningTodayMs
+    readonly property double weekMs: closedWeekMs + (isRunning ? overlap(running.start, now, weekStart, weekStart + 7 * 86400000) : 0)
+
+    // [{name, color, ms}] for today, biggest first.
+    readonly property var todayByProject: {
+        const acc = Object.assign({}, closedTodayByProject);
+        if (runningTodayMs > 0) {
+            const key = running.project || "";
+            acc[key] = (acc[key] || 0) + runningTodayMs;
+        }
         return Object.keys(acc).map(k => ({
                     name: k,
                     color: colorFor(k),
@@ -84,25 +110,16 @@ QtObject {
         return Math.max(0, Math.min(aEnd, bEnd) - Math.max(aStart, bStart));
     }
 
-    // Time logged today for one task, running timer included.
+    // Time logged today for one task, running timer included. O(1): the popup
+    // calls this once per visible row, every second.
     function taskTodayMs(taskId) {
-        const from = dayStart;
-        const to = from + 86400000;
-        let total = 0;
-        for (const e of entries)
-            if (e.taskId === taskId)
-                total += overlap(e.start, e.end, from, to);
-        if (isRunning && running.taskId === taskId)
-            total += overlap(running.start, now, from, to);
-        return total;
+        return (closedTodayByTask[taskId] || 0) + (running.taskId === taskId ? runningTodayMs : 0);
     }
 
-    function rangeMs(from, to) {
+    function closedRangeMs(from, to) {
         let total = 0;
         for (const e of entries)
             total += overlap(e.start, e.end, from, to);
-        if (isRunning)
-            total += overlap(running.start, now, from, to);
         return total;
     }
 
@@ -275,9 +292,13 @@ QtObject {
     }
 
     // Only drops closed entries from today; a running timer keeps going.
+    // An entry that straddles midnight is clipped back to midnight rather
+    // than deleted, so yesterday's time is never taken with it.
     function clearToday() {
         const cut = dayStart;
-        file.adapter.entries = file.adapter.entries.filter(e => e.end <= cut);
+        file.adapter.entries = file.adapter.entries.filter(e => e.start < cut).map(e => e.end <= cut ? e : Object.assign({}, e, {
+                end: cut
+            }));
         persist();
     }
 

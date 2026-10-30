@@ -15,10 +15,8 @@ BarText {
     readonly property string month: Qt.formatDateTime(clock.date, "MM")
     readonly property string year: Qt.formatDateTime(clock.date, "yyyy")
 
-    readonly property string preHour: ""
     readonly property string middleSep: " • "
-    readonly property string preDate: ""
 
     anchors.centerIn: parent
-    text: preHour + hours + ":" + minutes + middleSep + preDate + day + "/" + month
+    text: hours + ":" + minutes + middleSep + day + "/" + month
 }

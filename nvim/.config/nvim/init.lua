@@ -38,4 +38,4 @@ vim.schedule(function()
 end)
 
 -- vim.lsp.inlay_hint.enable()
-vim.g.vscode_snippets_path = "./snippets"
+vim.g.vscode_snippets_path = vim.fn.stdpath "config" .. "/snippets"

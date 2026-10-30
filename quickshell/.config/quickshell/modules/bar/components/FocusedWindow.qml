@@ -1,20 +1,15 @@
+import "../../../utils"
 import "../utils"
 
 import QtQuick
 import Quickshell.Hyprland
 
 BarText {
+    id: root
+
     property int maxLength: 32
 
-    function trimTitle(): string {
-        var title = Hyprland.activeToplevel?.title;
+    readonly property string title: Niri.available ? Niri.focusedTitle : (Hyprland.activeToplevel?.title ?? "")
 
-        if (title.length > maxLength - 3) {
-            return title.substring(0, maxLength - 3) + "...";
-        }
-
-        return title.substring(0, maxLength - 3);
-    }
-
-    text: Hyprland.activeToplevel ? trimTitle() : "-"
+    text: title === "" ? "-" : (title.length > maxLength ? title.substring(0, maxLength - 1) + "…" : title)
 }

@@ -20,9 +20,6 @@ Row {
     BarRect {
         // Right side is squared off so the tracker fuses onto it.
         rightRadius: 0
-        onClicked: {
-            console.log("left");
-        }
         Clock {}
     }
 

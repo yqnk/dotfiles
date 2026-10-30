@@ -3,6 +3,10 @@
 
 pidof -q hyprlock && exit 0
 
+# hyprlock is started from a compositor bind, not from a login shell, so
+# the path its config refers to has to be put in the environment here.
+export WALLPAPERS="${WALLPAPERS:-$HOME/.local/share/wallpapers}"
+
 target=19 # percent, the old 18000/96000
 cur=$(brightnessctl -m | cut -d, -f4 | tr -d %)
 

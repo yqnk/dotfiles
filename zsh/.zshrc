@@ -4,6 +4,11 @@
 
 # env
 
+# Machine-local values that must not be committed (device addresses,
+# tokens). Keep it untracked.
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/local.zsh" ]] &&
+  source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/local.zsh"
+
 export EDITOR="nvim"
 export VISUAL="$EDITOR"
 export PAGER="less"
@@ -146,7 +151,8 @@ bindkey '^Xh' _complete_help
 
 # plugins
 
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -r /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
+  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#4a4a4a'
 
 # aliases
@@ -207,7 +213,7 @@ umountafs() {
 }
 
 airpods() {
-  local mac=F0:D3:1F:79:DA:27
+  local mac=${AIRPODS_MAC:?set AIRPODS_MAC in ~/.config/zsh/local.zsh}
   case $1 in
     on)     echo "Connecting AirPods...";    bluetoothctl connect "$mac" ;;
     off)    echo "Disconnecting AirPods..."; bluetoothctl disconnect "$mac" ;;
@@ -232,7 +238,7 @@ pack() {
   local prev=""
   local count=0
 
-  flush() {
+  _pack_flush() {
     if [[ $count -ge $threshold ]]; then
       echo "$prev (x$count)"
     else
@@ -246,24 +252,25 @@ pack() {
     if [[ "$line" == "$prev" ]]; then
       ((count++))
     else
-      flush
+      _pack_flush
       prev="$line"
       count=1
     fi
   done
-  flush
+  _pack_flush
 
-  unfunction flush
+  unfunction _pack_flush
 }
 
 # tool init
 
-source "$HOME/.cargo/env"
+[[ -r "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
 # syntax highlighting must be sourced last
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+[[ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh ]] &&
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 ZSH_HIGHLIGHT_STYLES[arg0]='fg=#b294bb'
 ZSH_HIGHLIGHT_STYLES[precommand]='fg=#b294bb,underline'
 ZSH_HIGHLIGHT_STYLES[suffix-alias]='fg=#b294bb,underline'

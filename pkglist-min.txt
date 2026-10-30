@@ -73,6 +73,7 @@ pipewire
 pipewire-alsa
 pipewire-jack
 pipewire-pulse
+playerctl
 pre-commit
 python
 python-lsp-server
@@ -83,6 +84,7 @@ quickshell
 rofi
 rsync
 screen
+slurp
 starship
 stow
 strace
@@ -99,6 +101,7 @@ ttf-roboto
 typst
 ufw
 unrar
+upower
 uv
 valgrind
 vim
@@ -108,7 +111,6 @@ vlc
 vulkan-headers
 vulkan-tools
 vulkan-validation-layers
-waybar
 wdisplays
 webkit2gtk-4.1
 wev

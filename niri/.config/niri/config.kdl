@@ -200,8 +200,8 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+Return hotkey-overlay-title="Terminal" { spawn "kitty"; }
-    Mod+D hotkey-overlay-title="Launcher" { spawn-sh "rofi -show drun && ~/.config/rofi/rofiplaceholder"; }
-    Mod+L hotkey-overlay-title="Lock the screen" { spawn "~/.local/bin/lockscreen"; }
+    Mod+D hotkey-overlay-title="Launcher" { spawn-sh "~/.local/bin/launcher"; }
+    Mod+L hotkey-overlay-title="Lock the screen" { spawn-sh "~/.local/bin/lockscreen"; }
     Mod+C hotkey-overlay-title="Pick a color" { spawn-sh "niri msg pick-color | tail -n1 | awk '{print $2}' | wl-copy"; }
     Mod+R hotkey-overlay-title="Restart the shell" { spawn-sh "pkill -x qs; setsid -f qs"; }
 

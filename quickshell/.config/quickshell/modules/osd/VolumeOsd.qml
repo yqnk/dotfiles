@@ -19,18 +19,6 @@ OsdWindow {
     property bool muted: sink?.audio?.muted ?? false
     property bool ready: false
 
-    function volumeIcon(): string {
-        if (muted)
-            return "";
-        if (volume === 0)
-            return "-";
-        if (volume < 0.33)
-            return "";
-        if (volume < 0.66)
-            return "";
-        return "";
-    }
-
     onVolumeChanged: {
         if (root.ready)
             root.pulse();
@@ -50,7 +38,7 @@ OsdWindow {
         anchors.left: parent.left
         anchors.leftMargin: root.sideMargin
         anchors.verticalCenter: parent.verticalCenter
-        text: root.volumeIcon()
+        text: Glyphs.volume(root.volume, root.muted)
     }
 
     BarText {

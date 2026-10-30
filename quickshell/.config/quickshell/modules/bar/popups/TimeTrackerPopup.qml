@@ -16,6 +16,9 @@ TrayPopup {
     // Task id currently being renamed inline, "" when none.
     property string editingId: ""
 
+    // "Clear today" asks first: one click used to drop the day for good.
+    property bool clearArmed: false
+
     // Small glyph button used for the per-row pin / rename / delete actions.
     component RowAction: Item {
         id: rowAction
@@ -90,6 +93,7 @@ TrayPopup {
 
     onVisibleChanged: {
         editingId = "";
+        clearArmed = false;
         if (visible)
             addField.forceActiveFocus();
         else
@@ -382,13 +386,11 @@ TrayPopup {
                     anchors.fill: parent
                     hoverEnabled: true
                     enabled: !taskRow.editing
-                    acceptedButtons: Qt.LeftButton | Qt.RightButton
-                    // Left: (re)start, or stop if it's the one running.
-                    // Right: delete the task.
-                    onClicked: mouse => {
-                        if (mouse.button === Qt.RightButton)
-                            Tracker.removeTask(taskRow.modelData.id);
-                        else if (taskRow.isCurrent)
+                    // Click to (re)start, or to stop if it's the one running.
+                    // Deleting is the trash button only: right-click here used
+                    // to delete, while right-click on the bar widget stops.
+                    onClicked: {
+                        if (taskRow.isCurrent)
                             Tracker.stop();
                         else
                             Tracker.resume(taskRow.modelData.id);
@@ -619,15 +621,32 @@ TrayPopup {
             BarText {
                 anchors.centerIn: parent
                 font.pixelSize: 11
-                color: clearArea.containsMouse ? "#f44336" : Colors.withAlpha("#ffffff", 0.4)
-                text: "Clear today"
+                color: root.clearArmed || clearArea.containsMouse ? "#f44336" : Colors.withAlpha("#ffffff", 0.4)
+                text: root.clearArmed ? "Clear today — click again to confirm" : "Clear today"
+            }
+
+            // Disarms itself, so a stray first click cannot sit there waiting
+            // to become a confirmation later.
+            Timer {
+                id: clearTimeout
+                interval: 4000
+                onTriggered: root.clearArmed = false
             }
 
             MouseArea {
                 id: clearArea
                 anchors.fill: parent
                 hoverEnabled: true
-                onClicked: Tracker.clearToday()
+                onClicked: {
+                    if (root.clearArmed) {
+                        root.clearArmed = false;
+                        clearTimeout.stop();
+                        Tracker.clearToday();
+                    } else {
+                        root.clearArmed = true;
+                        clearTimeout.restart();
+                    }
+                }
             }
         }
     }

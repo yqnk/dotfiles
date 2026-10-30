@@ -1,9 +1,12 @@
+import "../../../utils"
 import "../utils"
 
 import QtQuick
 import Quickshell.Services.UPower
 
 Row {
+    id: root
+
     property var battery: UPower.displayDevice
     property real percent: BatteryNotifier.percent
     property bool charging: !(UPower.onBattery)
@@ -12,35 +15,54 @@ Row {
     property color fillColor: charging ? "#4caf50" : (low ? "#f44336" : "#ffffff")
     property color outlineColor: low ? "#f44336" : "#ffffff"
 
-    // inner fill area is 15.2 wide, inset from the outline stroke
-    property real fillWidth: Math.max(0, 15.2 * percent / 100)
-
-    function svgSource(): string {
-        return "data:image/svg+xml;utf8," +
-            "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 5 23 13'>" +
-            "<rect x='2' y='6' width='18' height='10' rx='2.5' fill='none' stroke='" + outlineColor + "' stroke-width='1.3' stroke-opacity='0.6'/>" +
-            "<rect x='3.4' y='7.3' width='" + fillWidth + "' height='7.4' rx='1.3' fill='" + fillColor + "'/>" +
-            "<rect x='20.3' y='9.5' width='1.6' height='3' rx='0.8' fill='" + outlineColor + "' fill-opacity='0.6'/>" +
-            "</svg>";
-    }
-
     spacing: 4
 
-    Image {
+    // Body, fill and nub as plain Rectangles. This used to be an Image fed by
+    // a data: URI SVG rebuilt and re-rasterised at 288x160 on every 1% step.
+    Item {
         anchors.verticalCenter: parent.verticalCenter
-        // aspect matches the svg viewBox (23x13) to avoid stretching
         width: 18
         height: 10
-        sourceSize.width: 288
-        sourceSize.height: 160
-        smooth: true
-        mipmap: false
-        antialiasing: true
-        source: parent.svgSource()
+
+        Rectangle {
+            id: body
+            width: 16
+            height: parent.height
+            radius: 2.5
+            color: "transparent"
+            border.width: 1
+            border.color: Colors.withAlpha(root.outlineColor, 0.6)
+
+            Rectangle {
+                x: 1.3
+                y: 1.3
+                width: (body.width - 2.6) * Math.max(0, Math.min(100, root.percent)) / 100
+                height: body.height - 2.6
+                radius: 1.3
+                color: root.fillColor
+
+                Behavior on width {
+                    NumberAnimation {
+                        duration: 300
+                        easing.type: Easing.OutCubic
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            anchors.left: body.right
+            anchors.leftMargin: 0.4
+            anchors.verticalCenter: body.verticalCenter
+            width: 1.6
+            height: 3
+            radius: 0.8
+            color: Colors.withAlpha(root.outlineColor, 0.6)
+        }
     }
 
     BarText {
         anchors.verticalCenter: parent.verticalCenter
-        text: parent.percent + "%"
+        text: root.percent + "%"
     }
 }

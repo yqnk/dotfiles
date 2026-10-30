@@ -4,7 +4,7 @@
 ## Install
 ```sh
 $ git clone git@github.com:yqnk/dotfiles.git ~/dotfiles
-$ cd
+$ cd ~/dotfiles
 
 # Install wallpapers
 $ ln -s ~/dotfiles/wallpapers ~/.local/share/wallpapers
@@ -12,9 +12,17 @@ $ ln -s ~/dotfiles/wallpapers ~/.local/share/wallpapers
 # Install fonts
 $ sudo pacman -S --needed - < fonts.txt
 
-# Install packages in pkglist.txt
-cat pkglist.txt | xargs sudo pacman -S --needed --
+# Install packages. pkglist-min.txt is the minimal set, pkglist-extra.txt is
+# everything else: the two lists never repeat a package.
+$ cat pkglist-min.txt pkglist-extra.txt | xargs sudo pacman -S --needed --
+
+# AUR packages (paru, yay, ...)
+$ cat pkglist-aur.txt | xargs paru -S --needed --
 ```
+
+Machine-local values that must not be committed (device MAC addresses, tokens)
+go in `~/.config/zsh/local.zsh`, which `.zshrc` sources when it exists.
+`airpods` needs `AIRPODS_MAC` set there.
 
 ## Stow
 
@@ -26,18 +34,20 @@ $ stow kitty nvim
 
 By default, stow symlinks the content of every folder you give him to another folder in the parent folder.
 
+Re-run `stow -R <package>` after a pull that adds a file: stow only links files
+that existed when it last ran.
+
 ## Compositors
 
-Both **Hyprland** and **niri** are configured and can be stowed side by side; pick the session
-at login.
+**niri** is the session in use:
 
 ```sh
-$ stow hypr  # Hyprland
-$ stow niri  # niri
-$ stow quickshell rofi kitty mako scripts   # shared
+$ stow niri quickshell rofi kitty mako scripts hyprlock
 ```
 
-The niri session uses `awww` for the wallpaper and `xwayland-satellite` for X11 apps instead of
-`hyprpaper` and Hyprland's built-in Xwayland. Screenshots use niri's built-in screenshot UI
-instead of `grimblast`. The Quickshell bar is shared, but its workspace and focused-window
-widgets still talk to the Hyprland IPC and stay empty under niri.
+It uses `awww` for the wallpaper and `xwayland-satellite` for X11 apps, niri's built-in
+screenshot UI, and `hyprlock` (via `~/.local/bin/lockscreen`) for the lock screen. The
+Quickshell bar reads niri's IPC event stream for workspaces and the focused window title.
+
+`hypr/` still holds the old **Hyprland** config. It is no longer used, and its
+wallpaper and lock-screen paths were never updated.

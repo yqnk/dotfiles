@@ -19,5 +19,4 @@
   grey: #38474a;
   placeholder-color: #b0b0b0;
   width: 400;
-  placeholder-text: " sus...";
 }

@@ -6,7 +6,6 @@ border-color=#9F9F9FFF
 margin=18
 border-radius=10
 max-icon-size=52
-icon-path=/home/yan/downloads/
 default-timeout=4000
 ignore-timeout=1
 layer=overlay

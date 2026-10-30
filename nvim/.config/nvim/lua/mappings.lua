@@ -14,8 +14,30 @@ map({ "n", "v" }, "<A-k>", "<cmd> m -2 <CR>")
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
+-- NvChad defaults replaced further down. pcall, because vim.keymap.del
+-- raises when the mapping is gone: one upstream rename would otherwise abort
+-- this file and silently drop every mapping below it.
+for _, lhs in ipairs {
+  "<leader>fm",
+  "<leader>fw",
+  "<leader>fb",
+  "<leader>fh",
+  "<leader>ma",
+  "<leader>fo",
+  "<leader>fz",
+  "<leader>cm",
+  "<leader>gt",
+  "<leader>pt",
+  "<leader>ff",
+  "<leader>fa",
+} do
+  pcall(nomap, "n", lhs)
+end
+
+-- the only one that was also mapped in visual mode
+pcall(nomap, "x", "<leader>fm")
+
 -- conform (format)
-nomap({ "n", "x" }, "<leader>fm")
 map({ "n", "x" }, "<leader>f", function()
   require("conform").format { lsp_fallback = true }
 end, { desc = "general format file " })
@@ -75,7 +97,6 @@ map("n", "<leader>do", "<cmd>lua require'dap'.step_over()<CR>", { desc = "Step O
 map("n", "<leader>dO", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Step Out" })
 map("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<CR>", { desc = "Toggle Repl" })
 map("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Run Last" })
-map("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<CR>", { desc = "Toggle UI" })
 map("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<CR>", { desc = "Terminate" })
 
 -- dapui
@@ -86,18 +107,6 @@ map("n", "<leader>de", "<cmd>lua require'dapui'.eval()<CR>", { desc = "Evaluate"
 map("n", "<leader>ad", "<cmd>lua require'hex'.dump()<CR>", { desc = "Dump Hex" })
 map("n", "<leader>aa", "<cmd>lua require'hex'.assemble()<CR>", { desc = "Dump Hex" })
 map("n", "<leader>at", "<cmd>lua require'hex'.toggle()<CR>", { desc = "Dump Hex" })
-
-nomap("n", "<leader>fw")
-nomap("n", "<leader>fb")
-nomap("n", "<leader>fh")
-nomap("n", "<leader>ma")
-nomap("n", "<leader>fo")
-nomap("n", "<leader>fz")
-nomap("n", "<leader>cm")
-nomap("n", "<leader>gt")
-nomap("n", "<leader>pt")
-nomap("n", "<leader>ff")
-nomap("n", "<leader>fa")
 
 -- gitsigns
 map("n", "<leader>gb", "<cmd>Gitsigns blame<CR>", { desc = "Git blame" })

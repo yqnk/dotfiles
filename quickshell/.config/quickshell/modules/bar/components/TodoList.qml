@@ -27,7 +27,7 @@ Row {
     function addTodo(text) {
         if (text.trim().length === 0)
             return;
-        todoFile.adapter.todos = todos.concat([{
+        todoFile.adapter.todos = todoFile.adapter.todos.concat([{
             id: Date.now() + "-" + Math.random().toString(36).slice(2),
             text: text.trim(),
             done: false
@@ -36,17 +36,17 @@ Row {
     }
 
     function toggleDone(id) {
-        todoFile.adapter.todos = todos.map(t => t.id === id ? Object.assign({}, t, { done: !t.done }) : t);
+        todoFile.adapter.todos = todoFile.adapter.todos.map(t => t.id === id ? Object.assign({}, t, { done: !t.done }) : t);
         persist();
     }
 
     function remove(id) {
-        todoFile.adapter.todos = todos.filter(t => t.id !== id);
+        todoFile.adapter.todos = todoFile.adapter.todos.filter(t => t.id !== id);
         persist();
     }
 
     function clearCompleted() {
-        todoFile.adapter.todos = todos.filter(t => !t.done);
+        todoFile.adapter.todos = todoFile.adapter.todos.filter(t => !t.done);
         persist();
     }
 

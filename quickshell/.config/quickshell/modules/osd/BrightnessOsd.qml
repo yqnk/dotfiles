@@ -1,34 +1,16 @@
 import "../bar/utils"
 import "../../utils"
 
-import Quickshell.Io
 import QtQuick
 
 OsdWindow {
     id: root
 
-    property string device: "intel_backlight"
     readonly property int sideMargin: 16
     readonly property int sliderGap: 8
 
-    property int current: 0
-    property int max: 1
-    readonly property real pct: max > 0 ? current / max : 0
+    readonly property real pct: Brightness.pct
     property bool ready: false
-
-    FileView {
-        id: maxFile
-        path: "/sys/class/backlight/" + root.device + "/max_brightness"
-        onLoaded: root.max = parseInt(text().trim())
-    }
-
-    FileView {
-        id: curFile
-        path: "/sys/class/backlight/" + root.device + "/brightness"
-        watchChanges: true
-        onLoaded: root.current = parseInt(text().trim())
-        onFileChanged: reload()
-    }
 
     onPctChanged: {
         if (root.ready)

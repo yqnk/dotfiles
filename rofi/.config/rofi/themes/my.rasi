@@ -19,5 +19,4 @@
   grey: #38474a;
   width: 400;
   placeholder-color: #808080;
-placeholder-text: " happy birthday!";
 }

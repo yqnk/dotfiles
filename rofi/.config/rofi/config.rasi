@@ -60,7 +60,6 @@ entry {
   background-color: inherit;
   margin: 16px;
   color: @fg-col;
-  placeholder: @placeholder-text;
   placeholder-color: @placeholder-color;
 }
 

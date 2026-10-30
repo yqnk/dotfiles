@@ -31,15 +31,34 @@ QtObject {
         radioStateProc.running = true;
     }
 
+    // `nmcli -t` separates fields with ":" and escapes a colon inside a field
+    // as "\\:", so a plain split() mangles any SSID containing one. Hide the
+    // escaped colons, split, then put them back.
+    function fields(line) {
+        return line.replace(/\\:/g, "\u0001").split(":").map(f => f.replace(/\u0001/g, ":"));
+    }
+
+    function setRadio(on) {
+        radioProc.command = ["nmcli", "radio", "wifi", on ? "on" : "off"];
+        radioProc.running = true;
+        // Optimistic: radioStateProc confirms it when nmcli exits.
+        radioOn = on;
+    }
+
+    property Process radioProc: Process {
+        onExited: root.refresh()
+    }
+
+    // SSID comes last: it is the only field that can contain a separator.
     property Process stateProc: Process {
-        command: ["nmcli", "-t", "-f", "ACTIVE,SSID,SIGNAL", "dev", "wifi"]
+        command: ["nmcli", "-t", "-f", "ACTIVE,SIGNAL,SSID", "dev", "wifi"]
         stdout: StdioCollector {
             onStreamFinished: {
                 for (const line of text.split("\n")) {
-                    const parts = line.split(":");
+                    const parts = root.fields(line);
                     if (parts[0] === "yes") {
-                        root.ssid = parts[1];
-                        root.strength = parseInt(parts[2]) || 0;
+                        root.strength = parseInt(parts[1]) || 0;
+                        root.ssid = parts.slice(2).join(":");
                         return;
                     }
                 }

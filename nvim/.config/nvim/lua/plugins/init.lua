@@ -1,7 +1,9 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
+    -- format_on_save only takes effect from setup(), so conform has to be
+    -- loaded by the save itself
+    event = "BufWritePre",
     opts = require "configs.conform",
   },
 
@@ -91,7 +93,6 @@ return {
   {
     "mrcjkb/rustaceanvim",
     version = "^8",
-    ft = "rust",
     lazy = false,
     init = function()
       require "configs.rustaceanvim"

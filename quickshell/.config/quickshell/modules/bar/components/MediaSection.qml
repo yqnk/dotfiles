@@ -12,6 +12,10 @@ Column {
     id: root
 
     property int rowWidth: 260
+    // Set by the popup: `visible` below only tracks whether a player exists,
+    // so without this the position poll runs with the popup closed, once per
+    // screen.
+    property bool popupVisible: false
 
     readonly property color accent: "#3b82f6"
 
@@ -51,7 +55,7 @@ Column {
     Timer {
         interval: 1000
         repeat: true
-        running: root.visible && (root.player?.isPlaying ?? false) && (root.player?.positionSupported ?? false)
+        running: root.popupVisible && root.visible && (root.player?.isPlaying ?? false) && (root.player?.positionSupported ?? false)
         onTriggered: root.player.positionChanged()
     }
 

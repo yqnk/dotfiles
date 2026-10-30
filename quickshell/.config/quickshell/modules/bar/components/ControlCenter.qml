@@ -1,3 +1,4 @@
+import "../../../utils"
 import "../utils"
 import "../popups"
 
@@ -26,21 +27,9 @@ Row {
         controlPopup.visible = !controlPopup.visible;
     }
 
-    function volumeIcon(): string {
-        if (muted)
-            return "\ueee8";
-        if (volume === 0)
-            return "\uf026-";
-        if (volume < 0.33)
-            return "\uf026";
-        if (volume < 0.66)
-            return "\uf027";
-        return "\uf028";
-    }
-
     BarText {
         anchors.verticalCenter: parent.verticalCenter
-        text: controlPopup.wifiGlyph
+        text: Network.icon
     }
 
     BarText {
@@ -50,7 +39,7 @@ Row {
 
     BarText {
         anchors.verticalCenter: parent.verticalCenter
-        text: root.volumeIcon()
+        text: Glyphs.volume(root.volume, root.muted)
     }
 
     Battery {
